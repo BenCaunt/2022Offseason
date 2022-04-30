@@ -42,5 +42,7 @@ public class CommandScheduler {
         }
     }
 
-    public void schedule()
+    public void schedule() {
+
+    }
 }
