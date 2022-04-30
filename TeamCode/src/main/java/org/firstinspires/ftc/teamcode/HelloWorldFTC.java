@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous
@@ -19,6 +20,7 @@ public class HelloWorldFTC extends LinearOpMode {
 		waitForStart();
 		timer.reset();
 		while (opModeIsActive()) {
+
 			System.out.println("Delta time" + timer.seconds());
 			testMotor.setPower(1);
 			timer.reset();
