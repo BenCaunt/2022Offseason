@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public abstract class Command {
-    protected ArrayList<Subsystem> dependencies;
+    protected ArrayList<Subsystem> dependencies = new ArrayList<Subsystem>();
 
     public ArrayList<Subsystem> getDependencies() {
         return dependencies;

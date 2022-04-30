@@ -2,12 +2,25 @@ package org.firstinspires.ftc.teamcode.Simulation;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.CommandFramework.CommandScheduler;
+import org.firstinspires.ftc.teamcode.Simulation.TestCommandsSubsystems.PrintCommand1;
+import org.firstinspires.ftc.teamcode.Simulation.TestCommandsSubsystems.PrintSubsystem1;
+
 public class RunSimulation {
     public static void main(String[] args) {
-        ElapsedTime timer = new ElapsedTime();
+        PrintSubsystem1 printSub = new PrintSubsystem1();
+        PrintCommand1 printCommand1 = new PrintCommand1(printSub, "Test 1");
+        PrintCommand1 printCommand2 = new PrintCommand1(printSub, "Test 2");
 
-        System.out.println("Running simulation!");
+        CommandScheduler scheduler = new CommandScheduler(null, printSub);
+        scheduler.initAuto();
 
-        System.out.println("Time elapsed: " + timer.seconds());
+        scheduler.enqueueCommand(printCommand1);
+        scheduler.enqueueCommand(printCommand2);
+
+        scheduler.run();
+        scheduler.run();
+
+        scheduler.shutdown();
     }
 }
