@@ -28,7 +28,7 @@ public class SqrtControl implements FeedbackController {
 		} else {
 			output = -Math.sqrt(Math.abs(error)) * coefficients.getK() - coefficients.getH();
 		}
-		checkForStart(error);
+		checkForStart();
 		double derivative =( error - errorPrevious) / timer.seconds();
 		timer.reset();
 		errorPrevious = error;
@@ -36,7 +36,7 @@ public class SqrtControl implements FeedbackController {
 		return output + coefficients.getKd() * derivative;
 	}
 
-	public void checkForStart(double error) {
+	public void checkForStart() {
 		if (!hasRun) {
 			hasRun = true;
 		}

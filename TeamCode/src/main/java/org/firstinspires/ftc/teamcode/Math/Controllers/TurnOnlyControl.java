@@ -11,7 +11,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.Dashboard;
 import org.firstinspires.ftc.teamcode.Math.AsymmetricProfile.AsymmetricMotionProfile;
-import org.firstinspires.ftc.teamcode.Math.Controllers.Coefficient.SqrtCoefficients;
 
 import java.util.function.DoubleSupplier;
 
@@ -64,21 +63,10 @@ public class TurnOnlyControl {
 		return output;
 	}
 
-	public double getTrackingError() {
-		return trackingError;
-	}
-
 	public double getEndGoalError() {
 		return endGoalError;
 	}
 
-	public void setHeadingReference(double reference) {
-		this.headingReference = reference;
-	}
-
-	public void setCoefficients(SqrtCoefficients coefficients) {
-		angleController.setCoefficients(coefficients);
-	}
 
 	public void regenerateProfile(double reference, double state) {
 		if (reference != previousReference) {

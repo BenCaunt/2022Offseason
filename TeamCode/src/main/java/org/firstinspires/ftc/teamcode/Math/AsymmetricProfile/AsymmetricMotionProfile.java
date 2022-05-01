@@ -85,7 +85,7 @@ public class AsymmetricMotionProfile {
         this.dt2 = Math.abs(distance) / Math.abs(constraints.max_velocity) - averageDt;
 
 
-        /**
+        /*
          * in many cases we will not be going far enough to actually accelerate to our maximum velocity
          * in this case, dt2 will end up being less than zero.
          */

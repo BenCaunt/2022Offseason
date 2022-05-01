@@ -5,13 +5,11 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 public class CommandScheduler {
     protected HardwareMap hwMap;
-    protected ArrayList<Subsystem> subsystems = new ArrayList<Subsystem>();
-    protected ArrayList<Command> activeCommands = new ArrayList<Command>();
-    protected LinkedList<Command> commandQueue = new LinkedList<Command>();
+    protected ArrayList<Subsystem> subsystems = new ArrayList<>();
+    protected ArrayList<Command> activeCommands = new ArrayList<>();
 
     public CommandScheduler(HardwareMap hardwareMap, Subsystem ...initSubsystems) {
         hwMap = hardwareMap;
@@ -36,7 +34,7 @@ public class CommandScheduler {
     public void run() {
         Iterator<Command> commands = activeCommands.iterator();
 
-        ArrayList<Command> nextCommands = new ArrayList<Command>();
+        ArrayList<Command> nextCommands = new ArrayList<>();
         while (commands.hasNext()) {
             Command command = commands.next();
             command.periodic();

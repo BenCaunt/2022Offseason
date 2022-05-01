@@ -11,9 +11,7 @@ import java.util.Collections;
  */
 public class MultipleCommand extends Command {
 
-
-	protected ArrayList<Command> commands = new ArrayList<Command>();
-
+	protected ArrayList<Command> commands = new ArrayList<>();
 
 	public MultipleCommand(Command ... commands) {
 		Collections.addAll(this.commands, commands);

@@ -25,12 +25,7 @@ public class TurnCommand extends Command {
 		this.drivetrain = drivetrain;
 		this.odometry = odometry;
 		this.referenceAngle = referenceAngle;
-		this.controller = new TurnOnlyControl(new DoubleSupplier() {
-			@Override
-			public double getAsDouble() {
-				return odometry.getPosition().get(2);
-			}
-		},referenceAngle);
+		this.controller = new TurnOnlyControl(() -> odometry.getPosition().get(2),referenceAngle);
 	}
 
 	@Override

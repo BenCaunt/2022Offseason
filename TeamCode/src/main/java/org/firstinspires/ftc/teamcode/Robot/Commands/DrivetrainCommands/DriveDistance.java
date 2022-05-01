@@ -12,8 +12,6 @@ import org.firstinspires.ftc.teamcode.Robot.Subsystems.Odometry;
 import org.firstinspires.ftc.teamcode.Math.Controllers.DistanceDriveControl;
 import org.firstinspires.ftc.teamcode.Utils.ExtraUtils;
 
-import java.util.function.DoubleSupplier;
-
 public class DriveDistance extends Command {
 
 	DistanceDriveControl control;
@@ -38,12 +36,7 @@ public class DriveDistance extends Command {
 		initialPosition = odom.getPosition();
 		double initialAngle = odom.getPosition().get(2);
 
-		control = new DistanceDriveControl(new DoubleSupplier() {
-			@Override
-			public double getAsDouble() {
-				return odom.getPosition().get(2);
-			}
-		}, initialAngle);
+		control = new DistanceDriveControl(() -> odom.getPosition().get(2), initialAngle);
 
 	}
 

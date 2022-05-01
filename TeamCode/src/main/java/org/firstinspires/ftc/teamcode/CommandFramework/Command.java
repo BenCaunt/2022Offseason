@@ -20,7 +20,7 @@ public abstract class Command {
         return this;
     }
 
-    protected ArrayList<Subsystem> dependencies = new ArrayList<Subsystem>();
+    protected ArrayList<Subsystem> dependencies = new ArrayList<>();
 
     public ArrayList<Subsystem> getDependencies() {
         return dependencies;

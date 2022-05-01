@@ -15,7 +15,7 @@ public abstract class BaseAuto extends LinearOpMode {
 	protected Robot robot;
 
 	@Override
-	public void runOpMode() throws InterruptedException {
+	public void runOpMode() {
 		robot = new Robot(hardwareMap, Robot.OpMode.Auto, gamepad1, gamepad2);
 		waitForStart();
 

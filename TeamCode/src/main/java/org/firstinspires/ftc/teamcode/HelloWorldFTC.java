@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Autonomous
 public class HelloWorldFTC extends LinearOpMode {
 	@Override
-	public void runOpMode() throws InterruptedException {
+	public void runOpMode() {
 
 		ElapsedTime timer = new ElapsedTime();
 		DcMotorEx testMotor = hardwareMap.get(DcMotorEx.class, "NameOnDriverStation");

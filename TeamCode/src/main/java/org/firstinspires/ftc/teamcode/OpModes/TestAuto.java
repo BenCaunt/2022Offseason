@@ -22,7 +22,6 @@ public class TestAuto extends BaseAuto {
 		driveForward.setNext(turn);
 		turn.setNext(driveBack);
 		driveBack.setNext(finalTurn);
-		Command start = driveForward;
-		return start;
+		return driveForward;
 	}
 }

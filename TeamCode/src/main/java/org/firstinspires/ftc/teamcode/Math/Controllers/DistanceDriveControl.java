@@ -76,22 +76,10 @@ public class DistanceDriveControl {
 		return Math.cos(Range.clip(turnControl.getEndGoalError(),-Math.PI / 2, Math.PI / 2));
 	}
 
-	public double getTrackingError() {
-		return trackingError;
-	}
 
 	public double endPoseError() {
 		return endPoseError;
 	}
-
-	public void setHeadingReference(double reference) {
-		this.turnControl.setHeadingReference(reference);
-	}
-
-	public void setTurnCoefficients(SqrtCoefficients coefficients) {
-		turnControl.setCoefficients(coefficients);
-	}
-
 
 	public void regenerateProfile(double reference, double state) {
 		if (reference != previousReference) {
