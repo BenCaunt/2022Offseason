@@ -56,25 +56,6 @@ public class Robot {
 		gamepad2.periodic();
 	}
 
-	@RequiresApi(api = Build.VERSION_CODES.N)
-	public void setupAuto() {
-//		Command driveForward = new DriveWithTime(drivetrain, 2, 0.3);
-//		Command driveBack = new DriveWithTime(drivetrain, 2, -0.3);
-		Command driveForward = new DriveDistance(drivetrain,odometry, 40);
-		Command turn = new TurnCommand(drivetrain,odometry, Math.toRadians(180));
-		Command driveBack = new DriveDistance(drivetrain,odometry, 40);
-		driveForward.setNext(turn);
-		turn.setNext(driveBack);
-
-		scheduler.forceCommand(driveForward);
-	}
-
-	public void setupTeleop() {
-		Command teleopCommand = new DriveTeleop(gamepad1, drivetrain);
-
-		scheduler.forceCommand(teleopCommand);
-	}
-
 	public CommandScheduler getScheduler() {
 		return scheduler;
 	}
