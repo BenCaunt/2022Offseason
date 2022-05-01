@@ -13,24 +13,13 @@ public class TestAuto extends LinearOpMode {
 
 	@Override
 	public void runOpMode() throws InterruptedException {
-		Robot robot = new Robot(gamepad1, gamepad2);
-
-		CommandScheduler scheduler = new CommandScheduler(hardwareMap, robot.drivetrain, robot.dashboard, robot.gamepad1, robot.gamepad2, robot.odometry);
-		scheduler.initAuto();
 		waitForStart();
-
-		Command driveForward = new DriveWithTime(robot.drivetrain, 2, 0.3);
-		Command stop = new DriveWithTime(robot.drivetrain, 2, 0);
-		Command driveBack = new DriveWithTime(robot.drivetrain, 2, -0.3);
-		driveForward.setNext(stop);
-		stop.setNext(driveBack);
-		scheduler.forceCommand(driveForward);
-
+		Robot robot = new Robot(hardwareMap, Robot.OpMode.Auto, gamepad1, gamepad2);
 
 		while (opModeIsActive()) {
-			scheduler.run();
+			robot.update();
 		}
-		scheduler.shutdown();
+		robot.shutdown();
 
 	}
 }
