@@ -64,11 +64,8 @@ public class CommandScheduler {
     }
 
     public void run() {
-
-
         Iterator<Command> commands = activeCommands.iterator();
 
-        boolean anyCommandStopped = false;
         while (commands.hasNext()) {
             Command command = commands.next();
             command.periodic();
@@ -76,13 +73,8 @@ public class CommandScheduler {
             if (command.stop()) {
                 command.shutdown();
                 commands.remove();
-
-                anyCommandStopped = true;
             }
         }
-
-        if (anyCommandStopped)
-            handleQueue();
 
         for (Subsystem subsystem : subsystems) {
             subsystem.periodic();
@@ -92,5 +84,22 @@ public class CommandScheduler {
     public void enqueueCommand(Command command) {
         commandQueue.offer(command);
         handleQueue();
+    }
+
+    public void forceCommand(Command command) {
+        ArrayList<Subsystem> nextCommandDependencies = command.getDependencies();
+
+        Iterator<Command> currentCommands = activeCommands.iterator();
+        while (currentCommands.hasNext()) {
+            command = currentCommands.next();
+
+            for (Subsystem subsystem : command.getDependencies())
+                if (nextCommandDependencies.contains(subsystem)) {
+                    command.shutdown();
+                    currentCommands.remove();
+                }
+        }
+
+        activeCommands.add(command);
     }
 }
