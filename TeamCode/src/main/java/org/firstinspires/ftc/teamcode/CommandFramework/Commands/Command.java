@@ -12,6 +12,16 @@ public abstract class Command {
 
     public Command getNext() { return nextCommand; }
 
+    public Command addNext(Command command) {
+        Command commandNode = this;
+        while (commandNode.getNext() != null)
+            commandNode = commandNode.getNext();
+
+        commandNode.setNext(command);
+
+        return this;
+    }
+
     protected ArrayList<Subsystem> dependencies = new ArrayList<Subsystem>();
 
     public ArrayList<Subsystem> getDependencies() {
