@@ -424,53 +424,7 @@ public class Input extends Subsystem {
 		return Math.abs(touchpad_finger_2_y - touchpad_finger_2_y_prev) > threshold;
 	}
 
-	public boolean isTouchpadFinger1XChanged(int threshold, int direction) {
-		if (direction == 0) {
-			return Math.abs(touchpad_finger_1_x - touchpad_finger_1_x_prev) > threshold;
-		} else if (direction == 1) {
-			return touchpad_finger_1_x - touchpad_finger_1_x_prev > threshold;
-		} else if (direction == 2) {
-			return touchpad_finger_1_x - touchpad_finger_1_x_prev < -threshold;
-		} else {
-			return Math.abs(touchpad_finger_1_x - touchpad_finger_1_x_prev) < threshold;
-		}
-	}
 
-	public boolean isTouchpadFinger1YChanged(int threshold, int direction) {
-		if (direction == 0) {
-			return Math.abs(touchpad_finger_1_y - touchpad_finger_1_y_prev) > threshold;
-		} else if (direction == 1) {
-			return touchpad_finger_1_y - touchpad_finger_1_y_prev > threshold;
-		} else if (direction == 2) {
-			return touchpad_finger_1_y - touchpad_finger_1_y_prev < -threshold;
-		} else {
-			return Math.abs(touchpad_finger_1_y - touchpad_finger_1_y_prev) < threshold;
-		}
-	}
-
-	public boolean isTouchpadFinger2XChanged(int threshold, int direction) {
-		if (direction == 0) {
-			return Math.abs(touchpad_finger_2_x - touchpad_finger_2_x_prev) > threshold;
-		} else if (direction == 1) {
-			return touchpad_finger_2_x - touchpad_finger_2_x_prev > threshold;
-		} else if (direction == 2) {
-			return touchpad_finger_2_x - touchpad_finger_2_x_prev < -threshold;
-		} else {
-			return Math.abs(touchpad_finger_2_x - touchpad_finger_2_x_prev) < threshold;
-		}
-	}
-
-	public boolean isTouchpadFinger2YChanged(int threshold, int direction) {
-		if (direction == 0) {
-			return Math.abs(touchpad_finger_2_y - touchpad_finger_2_y_prev) > threshold;
-		} else if (direction == 1) {
-			return touchpad_finger_2_y - touchpad_finger_2_y_prev > threshold;
-		} else if (direction == 2) {
-			return touchpad_finger_2_y - touchpad_finger_2_y_prev < -threshold;
-		} else {
-			return Math.abs(touchpad_finger_2_y - touchpad_finger_2_y_prev) < threshold;
-		}
-	}
 	public boolean isTouchpadReleased() {
 		return !touchpad && touchpad_prev;
 	}
@@ -504,50 +458,7 @@ public class Input extends Subsystem {
 	public boolean isTouchpadFinger2YReleased(int threshold) {
 		return Math.abs(touchpad_finger_2_y - touchpad_finger_2_y_prev) < threshold;
 	}
-	public boolean isTouchpadFinger1XReleased(int threshold, int direction) {
-		if (direction == 0) {
-			return Math.abs(touchpad_finger_1_x - touchpad_finger_1_x_prev) < threshold;
-		} else if (direction == 1) {
-			return touchpad_finger_1_x - touchpad_finger_1_x_prev < -threshold;
-		} else if (direction == 2) {
-			return touchpad_finger_1_x - touchpad_finger_1_x_prev > threshold;
-		} else {
-			return Math.abs(touchpad_finger_1_x - touchpad_finger_1_x_prev) < threshold;
-		}
-	}
-	public boolean isTouchpadFinger1YReleased(int threshold, int direction) {
-		if (direction == 0) {
-			return Math.abs(touchpad_finger_1_y - touchpad_finger_1_y_prev) < threshold;
-		} else if (direction == 1) {
-			return touchpad_finger_1_y - touchpad_finger_1_y_prev < -threshold;
-		} else if (direction == 2) {
-			return touchpad_finger_1_y - touchpad_finger_1_y_prev > threshold;
-		} else {
-			return Math.abs(touchpad_finger_1_y - touchpad_finger_1_y_prev) < threshold;
-		}
-	}
-	public boolean isTouchpadFinger2XReleased(int threshold, int direction) {
-		if (direction == 0) {
-			return Math.abs(touchpad_finger_2_x - touchpad_finger_2_x_prev) < threshold;
-		} else if (direction == 1) {
-			return touchpad_finger_2_x - touchpad_finger_2_x_prev < -threshold;
-		} else if (direction == 2) {
-			return touchpad_finger_2_x - touchpad_finger_2_x_prev > threshold;
-		} else {
-			return Math.abs(touchpad_finger_2_x - touchpad_finger_2_x_prev) < threshold;
-		}
-	}
-	public boolean isTouchpadFinger2YReleased(int threshold, int direction) {
-		if (direction == 0) {
-			return Math.abs(touchpad_finger_2_y - touchpad_finger_2_y_prev) < threshold;
-		} else if (direction == 1) {
-			return touchpad_finger_2_y - touchpad_finger_2_y_prev < -threshold;
-		} else if (direction == 2) {
-			return touchpad_finger_2_y - touchpad_finger_2_y_prev > threshold;
-		} else {
-			return Math.abs(touchpad_finger_2_y - touchpad_finger_2_y_prev) < threshold;
-		}
-	}
+
 	public boolean isCrossReleased() {
 		return !cross && cross_prev;
 	}

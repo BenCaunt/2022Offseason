@@ -19,13 +19,10 @@ public class TestAuto2 extends BaseAuto {
 		Command turn = turn(Math.toRadians(180));
 		Command driveBack = drive(-40);
 		Command finalTurn = turn(Math.toRadians(0));
-
 		driveForward.setNext(turn);
 		turn.setNext(driveBack);
 		driveBack.setNext(finalTurn);
-
 		Command start = driveForward;
-
 		return start;
 	}
 }
