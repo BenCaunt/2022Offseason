@@ -5,7 +5,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Drivetrain extends Subsystem{
+import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
+
+public class Drivetrain extends Subsystem {
 
 	protected DcMotorEx FrontLeft;
 	protected DcMotorEx FrontRight;

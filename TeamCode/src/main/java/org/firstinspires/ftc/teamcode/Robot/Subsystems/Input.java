@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Robot.Subsystems;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
+
 public class Input extends Subsystem {
 
 	// the threshold at which a trigger is detected as a button press

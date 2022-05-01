@@ -5,7 +5,9 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class Dashboard extends Subsystem  {
+import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
+
+public class Dashboard extends Subsystem {
 
 
 	public static TelemetryPacket packet = new TelemetryPacket();
