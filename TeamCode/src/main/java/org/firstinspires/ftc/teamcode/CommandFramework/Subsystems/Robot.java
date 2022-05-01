@@ -37,10 +37,8 @@ public class Robot {
 
 		if (opMode.equals(OpMode.Auto)) {
 			scheduler.initAuto();
-			setupAuto();
 		} else if (opMode.equals(OpMode.Teleop)) {
 			scheduler.initTeleop();
-			setupTeleop();
 		}
 	}
 
@@ -75,5 +73,9 @@ public class Robot {
 		Command teleopCommand = new DriveTeleop(gamepad1, drivetrain);
 
 		scheduler.forceCommand(teleopCommand);
+	}
+
+	public CommandScheduler getScheduler() {
+		return scheduler;
 	}
 }
