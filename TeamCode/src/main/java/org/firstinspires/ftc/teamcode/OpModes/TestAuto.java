@@ -15,13 +15,19 @@ public class TestAuto extends BaseAuto {
 	@RequiresApi(api = Build.VERSION_CODES.N)
 	@Override
 	public Command setupAuto(CommandScheduler scheduler) {
-		Command driveForward = drive(40);
-		Command turn = turn(Math.toRadians(180));
-		Command driveBack = drive(-40);
-		Command finalTurn = turn(Math.toRadians(0));
-		driveForward.setNext(turn);
-		turn.setNext(driveBack);
-		driveBack.setNext(finalTurn);
-		return driveForward;
+//		Command driveForward = drive(40);
+//		Command turn = turn(Math.toRadians(180));
+//		Command driveBack = drive(-40);
+//		Command finalTurn = turn(Math.toRadians(0));
+
+		Command auto = drive(40)
+				.addNext(turn(Math.toRadians(180)))
+				.addNext(drive(-40))
+				.addNext(turn(Math.toRadians(0)));
+
+//		driveForward.setNext(turn);
+//		turn.setNext(driveBack);
+//		driveBack.setNext(finalTurn);
+		return auto;
 	}
 }
