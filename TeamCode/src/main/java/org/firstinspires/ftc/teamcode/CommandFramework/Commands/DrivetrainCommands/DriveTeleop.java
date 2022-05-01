@@ -1,5 +1,6 @@
-package org.firstinspires.ftc.teamcode.CommandFramework.Commands;
+package org.firstinspires.ftc.teamcode.CommandFramework.Commands.DrivetrainCommands;
 
+import org.firstinspires.ftc.teamcode.CommandFramework.Commands.Command;
 import org.firstinspires.ftc.teamcode.CommandFramework.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.CommandFramework.Subsystems.Input;
 

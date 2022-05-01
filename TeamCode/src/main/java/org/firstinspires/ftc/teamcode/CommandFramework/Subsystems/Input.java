@@ -80,8 +80,8 @@ public class Input extends Subsystem {
 
 	@Override
 	public void periodic() {
-		readGamepad();
 		updatePrevious();
+		readGamepad();
 	}
 
 	@Override

@@ -66,17 +66,17 @@ public class CommandScheduler {
 
         Iterator<Command> currentCommands = activeCommands.iterator();
         while (currentCommands.hasNext()) {
-            command = currentCommands.next();
+            Command currentCommand = currentCommands.next();
 
-            for (Subsystem subsystem : command.getDependencies())
+            for (Subsystem subsystem : currentCommand.getDependencies())
                 if (nextCommandDependencies.contains(subsystem)) {
-                    command.shutdown();
-
+                    currentCommand.shutdown();
                     currentCommands.remove();
                     break;
                 }
         }
 
         activeCommands.add(command);
+        command.init();
     }
 }

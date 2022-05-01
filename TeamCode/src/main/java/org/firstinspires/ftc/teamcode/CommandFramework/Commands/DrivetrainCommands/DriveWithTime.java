@@ -1,7 +1,8 @@
-package org.firstinspires.ftc.teamcode.CommandFramework.Commands;
+package org.firstinspires.ftc.teamcode.CommandFramework.Commands.DrivetrainCommands;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.CommandFramework.Commands.Command;
 import org.firstinspires.ftc.teamcode.CommandFramework.Subsystems.Drivetrain;
 
 public class DriveWithTime extends Command {

@@ -18,8 +18,8 @@ public class RunSimulation {
         CommandScheduler scheduler = new CommandScheduler(null, printSub1, printSub2);
         scheduler.initAuto();
 
-        scheduler.enqueueCommand(printCommand1);
-        scheduler.enqueueCommand(printCommand2);
+//        scheduler.enqueueCommand(printCommand1);
+//        scheduler.enqueueCommand(printCommand2);
 
         scheduler.run();
         scheduler.run();

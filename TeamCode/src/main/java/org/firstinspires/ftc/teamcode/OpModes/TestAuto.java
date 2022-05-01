@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.CommandFramework.CommandScheduler;
-import org.firstinspires.ftc.teamcode.CommandFramework.Commands.DriveTeleop;
-import org.firstinspires.ftc.teamcode.CommandFramework.Commands.DriveWithTime;
+import org.firstinspires.ftc.teamcode.CommandFramework.Commands.Command;
+import org.firstinspires.ftc.teamcode.CommandFramework.Commands.DrivetrainCommands.DriveWithTime;
 import org.firstinspires.ftc.teamcode.CommandFramework.Subsystems.Robot;
 
 @Autonomous
@@ -19,9 +19,13 @@ public class TestAuto extends LinearOpMode {
 		scheduler.initAuto();
 		waitForStart();
 
-		scheduler.enqueueCommand(new DriveWithTime(robot.drivetrain,2,0.5));
-		scheduler.enqueueCommand(new DriveWithTime(robot.drivetrain,2,0));
-		scheduler.enqueueCommand(new DriveWithTime(robot.drivetrain,2,-0.5));
+		Command driveForward = new DriveWithTime(robot.drivetrain, 2, 0.3);
+		Command stop = new DriveWithTime(robot.drivetrain, 2, 0);
+		Command driveBack = new DriveWithTime(robot.drivetrain, 2, -0.3);
+		driveForward.setNext(stop);
+		stop.setNext(driveBack);
+		scheduler.forceCommand(driveForward);
+
 
 		while (opModeIsActive()) {
 			scheduler.run();

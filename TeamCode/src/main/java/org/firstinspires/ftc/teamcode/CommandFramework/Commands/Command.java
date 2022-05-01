@@ -8,7 +8,7 @@ import java.util.Collections;
 public abstract class Command {
     protected Command nextCommand = null;
 
-    public void addNext(Command command) { nextCommand = command; }
+    public void setNext(Command command) { nextCommand = command; }
 
     public Command getNext() { return nextCommand; }
 
