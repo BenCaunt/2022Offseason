@@ -64,6 +64,8 @@ public class CommandScheduler {
     }
 
     public void run() {
+
+
         Iterator<Command> commands = activeCommands.iterator();
 
         boolean anyCommandStopped = false;
@@ -81,6 +83,10 @@ public class CommandScheduler {
 
         if (anyCommandStopped)
             handleQueue();
+
+        for (Subsystem subsystem : subsystems) {
+            subsystem.periodic();
+        }
     }
 
     public void enqueueCommand(Command command) {

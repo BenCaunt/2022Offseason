@@ -40,7 +40,7 @@ public class Odometry extends Subsystem {
 	}
 
 	@Override
-	public void periodic() throws Exception {
+	public void periodic() {
 		double left = encoderTicksToInches(FrontLeft.getCurrentPosition());
 		double right = encoderTicksToInches(FrontRight.getCurrentPosition());
 		double leftVelocity = encoderTicksToInches(FrontLeft.getVelocity());
@@ -67,7 +67,11 @@ public class Odometry extends Subsystem {
 
 		ExtraUtils.rotate(nu, imuAngle);
 
-		position = position.add(nu);
+		try {
+			position = position.add(nu);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		position.set(imuAngle,2);
 
