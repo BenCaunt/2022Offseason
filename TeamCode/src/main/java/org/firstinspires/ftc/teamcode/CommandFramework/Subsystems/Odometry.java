@@ -19,7 +19,7 @@ public class Odometry extends Subsystem {
 	private double rightPrev = 0;
 	double trackWidth = 35.70453809697589;
 	double velocityX = 0;
-	double velocityΘ = 0;
+	double velocityTheta = 0;
 
 	Vector position = new Vector(3);
 
@@ -54,7 +54,7 @@ public class Odometry extends Subsystem {
 		double xDelta = (leftDelta + rightDelta) / 2;
 		double yDelta = 0;
 		double thetaDelta = (rightDelta - leftDelta) / (trackWidth);
-		velocityΘ = thetaDelta / timer.seconds();
+		velocityTheta = thetaDelta / timer.seconds();
 		timer.reset();
 
 		double imuAngle = imu.getAngularOrientation().firstAngle;
@@ -72,7 +72,6 @@ public class Odometry extends Subsystem {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		position.set(imuAngle,2);
 
 		drawRobot(position, Dashboard.packet);
@@ -98,7 +97,7 @@ public class Odometry extends Subsystem {
 		return new Vector(new double[] {
 				velocityX,
 				0,
-				velocityΘ
+				velocityTheta
 		});
 	}
 }
