@@ -36,54 +36,29 @@ public class CommandScheduler {
             subsystem.shutdown();
     }
 
-    public void handleQueue() {
-        if (commandQueue.isEmpty())
-            return;
-
-        ArrayList<Subsystem> nextCommandDependencies = commandQueue.peek().getDependencies();
-
-        ArrayList<Subsystem> activeSubsystems = new ArrayList<Subsystem>();
-        for (Command command : activeCommands)
-            activeSubsystems.addAll(command.getDependencies());
-
-        boolean canAdd = true;
-        for (Subsystem subsystem : nextCommandDependencies) {
-            if (activeSubsystems.contains(subsystem)) {
-                canAdd = false;
-                break;
-            }
-        }
-
-        if (canAdd) {
-            Command nextCommand = commandQueue.poll();
-            nextCommand.init();
-
-            activeCommands.add(nextCommand);
-            handleQueue();
-        }
-    }
-
     public void run() {
         Iterator<Command> commands = activeCommands.iterator();
 
+        ArrayList<Command> nextCommands = new ArrayList<Command>();
         while (commands.hasNext()) {
             Command command = commands.next();
             command.periodic();
 
             if (command.stop()) {
                 command.shutdown();
+                if (command.getNext() != null)
+                    nextCommands.add(command.getNext());
+
                 commands.remove();
             }
         }
 
+        for (Command nextCommand : nextCommands)
+            forceCommand(nextCommand);
+
         for (Subsystem subsystem : subsystems) {
             subsystem.periodic();
         }
-    }
-
-    public void enqueueCommand(Command command) {
-        commandQueue.offer(command);
-        handleQueue();
     }
 
     public void forceCommand(Command command) {
@@ -96,7 +71,9 @@ public class CommandScheduler {
             for (Subsystem subsystem : command.getDependencies())
                 if (nextCommandDependencies.contains(subsystem)) {
                     command.shutdown();
+
                     currentCommands.remove();
+                    break;
                 }
         }
 

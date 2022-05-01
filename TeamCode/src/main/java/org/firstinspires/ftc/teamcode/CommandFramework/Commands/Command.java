@@ -6,6 +6,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public abstract class Command {
+    protected Command nextCommand = null;
+
+    public void addNext(Command command) { nextCommand = command; }
+
+    public Command getNext() { return nextCommand; }
+
     protected ArrayList<Subsystem> dependencies = new ArrayList<Subsystem>();
 
     public ArrayList<Subsystem> getDependencies() {
