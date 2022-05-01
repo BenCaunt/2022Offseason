@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.Simulation.TestCommandsSubsystems;
 
-import org.firstinspires.ftc.teamcode.CommandFramework.Commands.Command;
+import org.firstinspires.ftc.teamcode.CommandFramework.Command;
 
 public class PrintCommand1 extends Command {
     PrintSubsystem1 printSubsystem;

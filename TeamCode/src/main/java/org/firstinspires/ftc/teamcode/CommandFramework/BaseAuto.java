@@ -5,12 +5,10 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.CommandFramework.Commands.Command;
-import org.firstinspires.ftc.teamcode.CommandFramework.Commands.DrivetrainCommands.DriveDistance;
-import org.firstinspires.ftc.teamcode.CommandFramework.Commands.DrivetrainCommands.TurnCommand;
-import org.firstinspires.ftc.teamcode.CommandFramework.Subsystems.Robot;
+import org.firstinspires.ftc.teamcode.Robot.Commands.DrivetrainCommands.DriveDistance;
+import org.firstinspires.ftc.teamcode.Robot.Commands.DrivetrainCommands.TurnCommand;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.Robot;
 
 public abstract class BaseAuto extends LinearOpMode {
 

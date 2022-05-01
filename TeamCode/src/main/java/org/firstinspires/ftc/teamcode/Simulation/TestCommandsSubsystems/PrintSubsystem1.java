@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Simulation.TestCommandsSubsystems;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.CommandFramework.Subsystems.Subsystem;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.Subsystem;
 
 public class PrintSubsystem1 extends Subsystem {
     public void initAuto(HardwareMap hwMap) {

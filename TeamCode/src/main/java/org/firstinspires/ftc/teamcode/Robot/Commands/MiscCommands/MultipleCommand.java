@@ -1,6 +1,6 @@
-package org.firstinspires.ftc.teamcode.CommandFramework.Commands.MiscCommands;
+package org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands;
 
-import org.firstinspires.ftc.teamcode.CommandFramework.Commands.Command;
+import org.firstinspires.ftc.teamcode.CommandFramework.Command;
 
 import java.util.ArrayList;
 import java.util.Collections;

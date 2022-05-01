@@ -9,17 +9,21 @@ import com.ThermalEquilibrium.homeostasis.Utils.MathUtils;
 import com.ThermalEquilibrium.homeostasis.Utils.Vector;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.CommandFramework.Subsystems.Dashboard;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.Dashboard;
 import org.firstinspires.ftc.teamcode.Math.AsymmetricProfile.AsymmetricMotionProfile;
 import org.firstinspires.ftc.teamcode.Math.Controllers.Coefficient.SqrtCoefficients;
 
 import java.util.function.DoubleSupplier;
 
 public class TurnOnlyControl {
+
 	protected double headingReference;
-	protected double endGoalError = 1000;
+	protected double endGoalError = 0;
+	protected double previousReference = 0;
+
 	protected DoubleSupplier robotAngle;
-	protected double previousReference = 100000000;
+
+
 	ElapsedTime timer = new ElapsedTime();
 	AsymmetricMotionProfile profile_n;
 
@@ -41,14 +45,14 @@ public class TurnOnlyControl {
 	public Vector calculate() {
 
 		regenerateProfile(robotAngle.getAsDouble(), headingReference);
-		double profileState = profile_n.calculate(timer.seconds()).getX(); //profile.calculate(timer.seconds()).position;
+		double profileState = profile_n.calculate(timer.seconds()).getX();
 		Vector output = new Vector(2);
+
 		endGoalError = MathUtils.normalizedHeadingError(headingReference, robotAngle.getAsDouble());
 		trackingError = MathUtils.normalizedHeadingError(profileState, robotAngle.getAsDouble());
-		Dashboard.packet.put("Turn Tracking Error", trackingError);
-		Dashboard.packet.put("End Goal Error", endGoalError);
-		Dashboard.packet.put("Turn reference", headingReference);
-		Dashboard.packet.put("Robot Angle", robotAngle.getAsDouble());
+
+		telemetry();
+
 		double heading = -angleControl.calculate(0,  endGoalError);
 
 		double left = + heading;
@@ -87,4 +91,11 @@ public class TurnOnlyControl {
 		previousReference = reference;
 	}
 
+	@RequiresApi(api = Build.VERSION_CODES.N)
+	protected void telemetry() {
+		Dashboard.packet.put("Turn Tracking Error", trackingError);
+		Dashboard.packet.put("End Goal Error", endGoalError);
+		Dashboard.packet.put("Turn reference", headingReference);
+		Dashboard.packet.put("Robot Angle", robotAngle.getAsDouble());
+	}
 }

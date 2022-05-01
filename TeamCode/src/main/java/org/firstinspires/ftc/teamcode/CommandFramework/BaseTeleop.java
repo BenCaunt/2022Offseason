@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode.CommandFramework;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.CommandFramework.Commands.Command;
-import org.firstinspires.ftc.teamcode.CommandFramework.Subsystems.Robot;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.Robot;
 
 public abstract class BaseTeleop extends LinearOpMode {
 

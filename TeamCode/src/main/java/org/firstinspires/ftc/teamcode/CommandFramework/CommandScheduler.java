@@ -2,8 +2,7 @@ package org.firstinspires.ftc.teamcode.CommandFramework;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.CommandFramework.Commands.Command;
-import org.firstinspires.ftc.teamcode.CommandFramework.Subsystems.Subsystem;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.Subsystem;
 
 import java.util.ArrayList;
 import java.util.Collections;

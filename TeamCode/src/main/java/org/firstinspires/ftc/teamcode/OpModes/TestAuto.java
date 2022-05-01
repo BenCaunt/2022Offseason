@@ -1,27 +1,28 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import android.os.Build;
 
+import androidx.annotation.RequiresApi;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
+import org.firstinspires.ftc.teamcode.CommandFramework.BaseAuto;
 import org.firstinspires.ftc.teamcode.CommandFramework.CommandScheduler;
-import org.firstinspires.ftc.teamcode.CommandFramework.Commands.Command;
-import org.firstinspires.ftc.teamcode.CommandFramework.Commands.DrivetrainCommands.DriveWithTime;
-import org.firstinspires.ftc.teamcode.CommandFramework.Subsystems.Robot;
+import org.firstinspires.ftc.teamcode.CommandFramework.Command;
 
 @Autonomous
-public class TestAuto extends LinearOpMode {
-
+public class TestAuto extends BaseAuto {
+	@RequiresApi(api = Build.VERSION_CODES.N)
 	@Override
-	public void runOpMode() throws InterruptedException {
-
-		waitForStart();
-		Robot robot = new Robot(hardwareMap, Robot.OpMode.Auto, gamepad1, gamepad2);
-
-		while (opModeIsActive()) {
-			robot.update();
-		}
-		robot.shutdown();
-
+	public Command setupAuto(CommandScheduler scheduler) {
+		Command driveForward = drive(40);
+		Command turn = turn(Math.toRadians(180));
+		Command driveBack = drive(-40);
+		Command finalTurn = turn(Math.toRadians(0));
+		driveForward.setNext(turn);
+		turn.setNext(driveBack);
+		driveBack.setNext(finalTurn);
+		Command start = driveForward;
+		return start;
 	}
 }
-

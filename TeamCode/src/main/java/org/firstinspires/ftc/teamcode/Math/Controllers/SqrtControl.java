@@ -11,7 +11,7 @@ public class SqrtControl implements FeedbackController {
 	SqrtCoefficients coefficients;
 
 	ElapsedTime timer = new ElapsedTime();
-	private double lasterror = 0;
+	private double errorPrevious = 0;
 	boolean hasRun = false;
 
 	public SqrtControl(SqrtCoefficients coefficients) {
@@ -28,17 +28,18 @@ public class SqrtControl implements FeedbackController {
 		} else {
 			output = -Math.sqrt(Math.abs(error)) * coefficients.getK() - coefficients.getH();
 		}
-
-		if (!hasRun) {
-			lasterror = error;
-			hasRun = true;
-		}
-
-		double derivative =( error - lasterror) / timer.seconds();
+		checkForStart(error);
+		double derivative =( error - errorPrevious) / timer.seconds();
 		timer.reset();
-		lasterror = error;
+		errorPrevious = error;
 
 		return output + coefficients.getKd() * derivative;
+	}
+
+	public void checkForStart(double error) {
+		if (!hasRun) {
+			hasRun = true;
+		}
 	}
 
 

@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 
-import org.firstinspires.ftc.teamcode.CommandFramework.Subsystems.Dashboard;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.Dashboard;
 import org.firstinspires.ftc.teamcode.Math.AsymmetricProfile.AsymmetricMotionProfile;
 import org.firstinspires.ftc.teamcode.Math.Controllers.Coefficient.SqrtCoefficients;
 
@@ -19,12 +19,14 @@ import java.util.function.DoubleSupplier;
 public class DistanceDriveControl {
 
 	BasicPID distanceControl = new BasicPID(ControlConstants.distanceControl);
+	AsymmetricMotionProfile profile_n;
 	TurnOnlyControl turnControl;
+	ElapsedTime timer = new ElapsedTime();
+
 	double trackingError = 0;
 	double endPoseError = 0;
 	double previousReference = 0;
-	AsymmetricMotionProfile profile_n = new AsymmetricMotionProfile(10,10,ControlConstants.driveConstraintsNew);
-	ElapsedTime timer = new ElapsedTime();
+	double reference_p = 0;
 
 	public DistanceDriveControl(DoubleSupplier robotAngle, double headingReference) {
 		turnControl = new TurnOnlyControl(robotAngle, headingReference);
@@ -43,20 +45,16 @@ public class DistanceDriveControl {
 		if (direction == 0) direction = 1;
 		reference = Math.abs(reference);
 		regenerateProfile(reference,state);
-		double reference_p = profile_n.calculate(timer.seconds()).getX();//profile.calculate(timer.seconds()).position;
-
+		reference_p = profile_n.calculate(timer.seconds()).getX();
 		trackingError = reference_p - state;
 		endPoseError = reference - state;
 
-		Dashboard.packet.put("Target distance",reference);
-		Dashboard.packet.put("profile distance",reference_p);
-		Dashboard.packet.put("Measured distance", state);
-
+		telemetry(reference, state);
 		Vector output = new Vector(2);
 
 		double forward = distanceControl.calculate(reference_p,state) * direction;
 		Vector turn = turnControl.calculate();
-		double scalar = Math.cos(Range.clip(turnControl.getEndGoalError(),-Math.PI / 2, Math.PI / 2));
+		double scalar = getTurnScalar();
 		output.set(forward * scalar, 0);
 		output.set(forward * scalar, 1);
 
@@ -66,6 +64,16 @@ public class DistanceDriveControl {
 			e.printStackTrace();
 			return output;
 		}
+	}
+
+	private void telemetry(double reference, double state) {
+		Dashboard.packet.put("Target distance",reference);
+		Dashboard.packet.put("profile distance",reference_p);
+		Dashboard.packet.put("Measured distance", state);
+	}
+
+	protected double getTurnScalar() {
+		return Math.cos(Range.clip(turnControl.getEndGoalError(),-Math.PI / 2, Math.PI / 2));
 	}
 
 	public double getTrackingError() {

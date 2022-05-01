@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.CommandFramework.Commands.DrivetrainCommands;
+package org.firstinspires.ftc.teamcode.Robot.Commands.DrivetrainCommands;
 
-import org.firstinspires.ftc.teamcode.CommandFramework.Commands.Command;
-import org.firstinspires.ftc.teamcode.CommandFramework.Subsystems.Drivetrain;
-import org.firstinspires.ftc.teamcode.CommandFramework.Subsystems.Input;
+import org.firstinspires.ftc.teamcode.CommandFramework.Command;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.Input;
 
 public class DriveTeleop extends Command {
 
@@ -22,9 +22,7 @@ public class DriveTeleop extends Command {
 
 	@Override
 	public void periodic() {
-
 		drivetrain.robotRelative(-gamepad1.getLeft_stick_y(),gamepad1.getRight_stick_x());
-
 	}
 
 	@Override
