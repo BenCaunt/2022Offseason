@@ -21,7 +21,7 @@ public class PrintCommand1 extends Command {
         printSubsystem.print("periodic: " + message);
     }
 
-    public boolean stop() {
+    public boolean completed() {
         return true;
     }
 

@@ -34,7 +34,7 @@ public class DriveWithTime extends Command {
 	}
 
 	@Override
-	public boolean stop() {
+	public boolean completed() {
 		return timer.seconds() > seconds;
 	}
 

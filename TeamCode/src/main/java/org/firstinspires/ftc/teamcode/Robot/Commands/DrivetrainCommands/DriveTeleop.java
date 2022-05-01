@@ -26,7 +26,7 @@ public class DriveTeleop extends Command {
 	}
 
 	@Override
-	public boolean stop() {
+	public boolean completed() {
 		return false;
 	}
 

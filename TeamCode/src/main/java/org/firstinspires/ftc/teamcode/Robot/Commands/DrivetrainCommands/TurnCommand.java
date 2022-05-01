@@ -42,7 +42,7 @@ public class TurnCommand extends Command {
 	}
 
 	@Override
-	public boolean stop() {
+	public boolean completed() {
 		return isComplete;
 	}
 

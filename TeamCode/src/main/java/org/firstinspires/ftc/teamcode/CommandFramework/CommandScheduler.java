@@ -39,7 +39,7 @@ public class CommandScheduler {
             Command command = commands.next();
             command.periodic();
 
-            if (command.stop()) {
+            if (command.completed()) {
                 command.shutdown();
                 if (command.getNext() != null)
                     nextCommands.add(command.getNext());

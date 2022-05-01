@@ -36,9 +36,9 @@ public class MultipleCommand extends Command {
 	 * @return false if any one action is false, returns true if all are true
 	 */
 	@Override
-	public boolean stop() {
+	public boolean completed() {
 		for (Command command: commands) {
-			if (!command.stop()) {
+			if (!command.completed()) {
 				return false;
 			}
 		}
@@ -48,7 +48,7 @@ public class MultipleCommand extends Command {
 	@Override
 	public void shutdown() {
 		for (Command command: commands) {
-			command.stop();
+			command.completed();
 		}
 	}
 }

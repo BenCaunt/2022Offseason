@@ -14,9 +14,9 @@ public class RaceCommand extends MultipleCommand {
 	 * otherwise same behavior as the {@link MultipleCommand}
 	 */
 	@Override
-	public boolean stop() {
+	public boolean completed() {
 		for (Command command : commands) {
-			if (command.stop()) {
+			if (command.completed()) {
 				return true;
 			}
 		}

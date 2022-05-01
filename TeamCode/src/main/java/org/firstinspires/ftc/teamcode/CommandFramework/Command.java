@@ -34,7 +34,7 @@ public abstract class Command {
 
     public abstract void periodic();
 
-    public abstract boolean stop();
+    public abstract boolean completed();
 
     public abstract void shutdown();
 }

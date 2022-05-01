@@ -51,7 +51,7 @@ public class DriveDistance extends Command {
 	}
 
 	@Override
-	public boolean stop() {
+	public boolean completed() {
 		return isComplete;
 	}
 
