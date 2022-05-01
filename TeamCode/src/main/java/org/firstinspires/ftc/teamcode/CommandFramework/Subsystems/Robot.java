@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class Robot {
 
-
 	public Dashboard dashboard = new Dashboard();
 	public Input gamepad1;
 	public Input gamepad2;
