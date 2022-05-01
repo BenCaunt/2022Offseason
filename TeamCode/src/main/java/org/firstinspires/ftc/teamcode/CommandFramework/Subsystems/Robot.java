@@ -1,12 +1,18 @@
 package org.firstinspires.ftc.teamcode.CommandFramework.Subsystems;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.CommandFramework.CommandScheduler;
 import org.firstinspires.ftc.teamcode.CommandFramework.Commands.Command;
+import org.firstinspires.ftc.teamcode.CommandFramework.Commands.DrivetrainCommands.DriveDistance;
 import org.firstinspires.ftc.teamcode.CommandFramework.Commands.DrivetrainCommands.DriveTeleop;
 import org.firstinspires.ftc.teamcode.CommandFramework.Commands.DrivetrainCommands.DriveWithTime;
+import org.firstinspires.ftc.teamcode.CommandFramework.Commands.DrivetrainCommands.TurnCommand;
 
 public class Robot {
 
@@ -52,13 +58,15 @@ public class Robot {
 		gamepad2.periodic();
 	}
 
+	@RequiresApi(api = Build.VERSION_CODES.N)
 	public void setupAuto() {
-		Command driveForward = new DriveWithTime(drivetrain, 2, 0.3);
-		Command stop = new DriveWithTime(drivetrain, 2, 0);
-		Command driveBack = new DriveWithTime(drivetrain, 2, -0.3);
-
-		driveForward.setNext(stop);
-		stop.setNext(driveBack);
+//		Command driveForward = new DriveWithTime(drivetrain, 2, 0.3);
+//		Command driveBack = new DriveWithTime(drivetrain, 2, -0.3);
+		Command driveForward = new DriveDistance(drivetrain,odometry, 40);
+		Command turn = new TurnCommand(drivetrain,odometry, Math.toRadians(180));
+		Command driveBack = new DriveDistance(drivetrain,odometry, 40);
+		driveForward.setNext(turn);
+		turn.setNext(driveBack);
 
 		scheduler.forceCommand(driveForward);
 	}

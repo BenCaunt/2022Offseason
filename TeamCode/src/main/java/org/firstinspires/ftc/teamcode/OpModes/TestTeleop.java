@@ -13,10 +13,14 @@ import org.firstinspires.ftc.teamcode.Simulation.TestCommandsSubsystems.PrintSub
 
 
 @TeleOp
-public class TestTeleop extends LinearOpMode {
+public class
+TestTeleop extends LinearOpMode {
 	@Override
 	public void runOpMode() throws InterruptedException {
 		waitForStart();
 		Robot robot = new Robot(hardwareMap, Robot.OpMode.Teleop, gamepad1, gamepad2);
+		while (opModeIsActive()) {
+			robot.update();
+		}
 	}
 }

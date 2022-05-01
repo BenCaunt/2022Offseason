@@ -24,6 +24,7 @@ public class TurnCommand extends Command {
 	@RequiresApi(api = Build.VERSION_CODES.N)
 	public TurnCommand(Drivetrain drivetrain, Odometry odometry, double referenceAngle) {
 		this.drivetrain = drivetrain;
+		this.odometry = odometry;
 		this.referenceAngle = referenceAngle;
 		this.controller = new TurnOnlyControl(new DoubleSupplier() {
 			@Override
