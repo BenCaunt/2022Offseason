@@ -70,7 +70,6 @@ public class Odometry extends Subsystem {
 		try {
 			position = position.add(nu);
 		} catch (Exception e) {
-			// fuck yeah
 			e.printStackTrace();
 		}
 
