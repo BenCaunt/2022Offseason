@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
 
 public class Drivetrain extends Subsystem {
+	protected HardwareMap hwMap;
 
 	protected DcMotorEx FrontLeft;
 	protected DcMotorEx FrontRight;
@@ -21,6 +22,8 @@ public class Drivetrain extends Subsystem {
 
 	@Override
 	public void initAuto(HardwareMap hwMap) {
+		this.hwMap = hwMap;
+
 		FrontLeft = hwMap.get(DcMotorEx.class, "FrontLeft");
 		FrontRight = hwMap.get(DcMotorEx.class, "FrontRight");
 		BackLeft = hwMap.get(DcMotorEx.class, "BackLeft");
@@ -45,7 +48,6 @@ public class Drivetrain extends Subsystem {
 		FrontRight.setDirection(DcMotorEx.Direction.REVERSE);
 		BackLeft.setDirection(DcMotorEx.Direction.FORWARD);
 		BackRight.setDirection(DcMotorEx.Direction.REVERSE);
-
 	}
 
 	@Override
@@ -79,6 +81,14 @@ public class Drivetrain extends Subsystem {
 		double left = forward + turn;
 		double right = forward - turn;
 		setPower(left,right);
+	}
+
+	public double getLeftVoltage() {
+		return hwMap.voltageSensor.get("FrontLeft").getVoltage();
+	}
+
+	public double getRightVoltage() {
+		return hwMap.voltageSensor.get("FrontRight").getVoltage();
 	}
 
 	@Override
