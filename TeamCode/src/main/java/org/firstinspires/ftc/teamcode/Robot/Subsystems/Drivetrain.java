@@ -18,6 +18,7 @@ public class Drivetrain extends Subsystem {
 
 
 
+
 	@Override
 	public void initAuto(HardwareMap hwMap) {
 		FrontLeft = hwMap.get(DcMotorEx.class, "FrontLeft");
@@ -50,9 +51,9 @@ public class Drivetrain extends Subsystem {
 	@Override
 	public void periodic() {
 		FrontLeft.setPower(leftPower);
-		FrontRight.setPower(rightPower);
 		BackLeft.setPower(leftPower);
 		BackRight.setPower(rightPower);
+		FrontRight.setPower(rightPower);
 	}
 
 	public void setPower(double left, double right) {

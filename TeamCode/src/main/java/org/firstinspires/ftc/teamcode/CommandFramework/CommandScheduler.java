@@ -60,9 +60,9 @@ public class CommandScheduler {
         ArrayList<Subsystem> nextCommandDependencies = command.getDependencies();
 
         Iterator<Command> currentCommands = activeCommands.iterator();
+
         while (currentCommands.hasNext()) {
             Command currentCommand = currentCommands.next();
-
             for (Subsystem subsystem : currentCommand.getDependencies())
                 if (nextCommandDependencies.contains(subsystem)) {
                     currentCommand.shutdown();
@@ -70,7 +70,7 @@ public class CommandScheduler {
                     break;
                 }
         }
-
+        
         activeCommands.add(command);
         command.init();
     }

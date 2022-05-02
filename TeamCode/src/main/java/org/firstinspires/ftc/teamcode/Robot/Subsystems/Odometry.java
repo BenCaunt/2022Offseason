@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
 import org.firstinspires.ftc.teamcode.Utils.ExtraUtils;
 
@@ -21,6 +22,7 @@ public class Odometry extends Subsystem {
 	double trackWidth = 35.70453809697589;
 	double velocityX = 0;
 	double velocityTheta = 0;
+	double thetaZeroAngle = 0;
 
 	Vector position = new Vector(3);
 
@@ -31,7 +33,7 @@ public class Odometry extends Subsystem {
 	public void initAuto(HardwareMap hwMap) {
 		imu = hwMap.get(BNO055IMU.class, "imu");
 		BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-		parameters.mode = BNO055IMU.SensorMode.IMU;
+		parameters.mode = BNO055IMU.SensorMode.NDOF;
 		parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
 		imu.initialize(parameters);
 
@@ -58,7 +60,7 @@ public class Odometry extends Subsystem {
 		velocityTheta = thetaDelta / timer.seconds();
 		timer.reset();
 
-		double imuAngle = imu.getAngularOrientation().firstAngle;
+		double imuAngle = AngleUnit.normalizeRadians(imu.getAngularOrientation().firstAngle + thetaZeroAngle);
 
 		Vector nu = new Vector(new double[] {
 				xDelta,
@@ -82,6 +84,11 @@ public class Odometry extends Subsystem {
 	@Override
 	public void shutdown() {
 
+	}
+
+	public void setEstimate(Vector estimate) {
+		thetaZeroAngle = estimate.get(2);
+		position = estimate;
 	}
 
 	public static double encoderTicksToInches(double ticks) {

@@ -23,6 +23,8 @@ public class TurnOnlyControl {
 	protected DoubleSupplier robotAngle;
 
 
+	boolean hasRun = false;
+
 	ElapsedTime timer = new ElapsedTime();
 	AsymmetricMotionProfile profile_n;
 
@@ -69,7 +71,8 @@ public class TurnOnlyControl {
 
 
 	public void regenerateProfile(double reference, double state) {
-		if (reference != previousReference) {
+		if (reference != previousReference || !hasRun) {
+			hasRun = true;
 			profile_n = new AsymmetricMotionProfile(
 					MathUtils.normalizedHeadingError(headingReference, state),
 					0,

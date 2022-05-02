@@ -19,7 +19,7 @@ import java.util.function.DoubleSupplier;
 public class DistanceDriveControl {
 
 	BasicPID distanceControl = new BasicPID(ControlConstants.distanceControl);
-	AsymmetricMotionProfile profile_n;
+	AsymmetricMotionProfile profile_n = new AsymmetricMotionProfile(10,10,ControlConstants.driveConstraintsNew);;
 	TurnOnlyControl turnControl;
 	ElapsedTime timer = new ElapsedTime();
 
@@ -27,6 +27,7 @@ public class DistanceDriveControl {
 	double endPoseError = 0;
 	double previousReference = 0;
 	double reference_p = 0;
+	boolean hasRun = false;
 
 	public DistanceDriveControl(DoubleSupplier robotAngle, double headingReference) {
 		turnControl = new TurnOnlyControl(robotAngle, headingReference);
@@ -82,7 +83,8 @@ public class DistanceDriveControl {
 	}
 
 	public void regenerateProfile(double reference, double state) {
-		if (reference != previousReference) {
+		if (reference != previousReference || !hasRun) {
+			hasRun = true;
 			profile_n = new AsymmetricMotionProfile(state, reference, ControlConstants.driveConstraintsNew);
 			timer.reset();
 		}
