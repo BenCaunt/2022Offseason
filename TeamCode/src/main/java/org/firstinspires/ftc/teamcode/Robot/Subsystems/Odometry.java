@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Robot.Subsystems;
 
+import com.ThermalEquilibrium.homeostasis.Filters.FilterAlgorithms.KalmanFilter;
+import com.ThermalEquilibrium.homeostasis.Filters.FilterAlgorithms.LowPassFilter;
 import com.ThermalEquilibrium.homeostasis.Utils.Vector;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -22,13 +24,16 @@ public class Odometry extends Subsystem {
 	double trackWidth = 35.70453809697589;
 	double velocityX = 0;
 	double velocityTheta = 0;
+	double velocityKalman = 0;
+	double velocityLowPass = 0;
 	double thetaZeroAngle = 0;
 
 	Vector position = new Vector(3);
 
 	ElapsedTime timer = new ElapsedTime();
 
-
+	KalmanFilter kf;
+	LowPassFilter lowPassFilter;
 	@Override
 	public void initAuto(HardwareMap hwMap) {
 		imu = hwMap.get(BNO055IMU.class, "imu");
@@ -39,7 +44,8 @@ public class Odometry extends Subsystem {
 
 		FrontLeft = hwMap.get(DcMotorEx.class, "FrontLeft");
 		FrontRight = hwMap.get(DcMotorEx.class, "FrontRight");
-
+		kf = new KalmanFilter(0.3,1,3);
+		lowPassFilter = new LowPassFilter(0.6);
 	}
 
 	@Override
@@ -57,7 +63,15 @@ public class Odometry extends Subsystem {
 		double xDelta = (leftDelta + rightDelta) / 2;
 		double yDelta = 0;
 		double thetaDelta = (rightDelta - leftDelta) / (trackWidth);
-		velocityTheta = thetaDelta / timer.seconds();
+		velocityTheta = -imu.getAngularVelocity().xRotationRate; //thetaDelta / timer.seconds();
+//		velocityKalman = kf.estimate(velocityTheta);
+//		velocityLowPass = lowPassFilter.estimate(velocityTheta);
+		double gyroVelocity = imu.getAngularVelocity().xRotationRate;
+		Dashboard.packet.put("Angular velocity",velocityTheta);
+		Dashboard.packet.put("Angular velocity KF",velocityKalman);
+		Dashboard.packet.put("Angular velocity Low pass",velocityLowPass);
+		Dashboard.packet.put("gyro velocity",gyroVelocity);
+
 		timer.reset();
 
 		double imuAngle = AngleUnit.normalizeRadians(imu.getAngularOrientation().firstAngle + thetaZeroAngle);

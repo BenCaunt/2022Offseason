@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Math.Controllers;
 
+import com.ThermalEquilibrium.homeostasis.Parameters.FeedforwardCoefficients;
 import com.ThermalEquilibrium.homeostasis.Parameters.PIDCoefficients;
 
 import org.firstinspires.ftc.teamcode.Math.AsymmetricProfile.MotionConstraint;
@@ -8,6 +9,12 @@ import org.firstinspires.ftc.teamcode.Math.Controllers.Coefficient.SqrtCoefficie
 public class ControlConstants {
 	public static PIDCoefficients distanceControl = new PIDCoefficients(0.1,0,0);
 	public static SqrtCoefficients angleControl = new SqrtCoefficients(0.45, 0.05,0);
+
+	public static SqrtCoefficients AngularVelocityTeleop = new SqrtCoefficients(0.5, 0,0);
+	public static PIDCoefficients AngularVelocityTeleop2 = new PIDCoefficients(0.2, 0,0);
+	public static FeedforwardCoefficients AngularVelocityTeleopFF = new FeedforwardCoefficients(0.125,0,0);
+
+
 	public static MotionConstraint driveConstraintsNew = new MotionConstraint(90,
 			-45,90);
 	public static MotionConstraint turnConstraintsNew =

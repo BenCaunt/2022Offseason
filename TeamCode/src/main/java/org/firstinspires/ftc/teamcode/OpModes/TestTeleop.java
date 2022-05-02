@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.CommandFramework.BaseTeleop;
 import org.firstinspires.ftc.teamcode.CommandFramework.CommandScheduler;
 import org.firstinspires.ftc.teamcode.CommandFramework.Command;
+import org.firstinspires.ftc.teamcode.Robot.Commands.DrivetrainCommands.ClosedLoopTeleop;
 import org.firstinspires.ftc.teamcode.Robot.Commands.DrivetrainCommands.DriveTeleop;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.Input;
 import org.firstinspires.ftc.teamcode.Simulation.TestCommandsSubsystems.PrintCommand1;
@@ -17,6 +18,6 @@ public class TestTeleop extends BaseTeleop {
 	public Command setupTeleop(CommandScheduler scheduler) {
 		Command printCommand = new PrintCommand1(robot.print, "Hello, World!");
 		robot.gamepad1.whenCrossPressed(printCommand);
-		return new DriveTeleop(robot.gamepad1,robot.drivetrain);
+		return new ClosedLoopTeleop(robot.drivetrain,robot.odometry,robot.gamepad1);
 	}
 }
