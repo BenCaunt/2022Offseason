@@ -10,20 +10,17 @@ import org.firstinspires.ftc.teamcode.Robot.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.Input;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.Odometry;
 
-import static org.firstinspires.ftc.teamcode.Math.Controllers.ControlConstants.AngularVelocityTeleop2;
+import static org.firstinspires.ftc.teamcode.Math.Controllers.ControlConstants.AngularVelocityTeleop;
 import static org.firstinspires.ftc.teamcode.Math.Controllers.ControlConstants.AngularVelocityTeleopFF;
 
 public class ClosedLoopTeleop extends Command {
 
 	public final double MAX_ANGULAR_VELOCITY = 8; // radians / s
-//	SqrtControl control = new SqrtControl(AngularVelocityTeleop);
-	BasicPID control = new BasicPID(AngularVelocityTeleop2);
+	BasicPID control = new BasicPID(AngularVelocityTeleop);
 	BasicFeedforward feedforward = new BasicFeedforward(AngularVelocityTeleopFF);
 	Drivetrain drivetrain;
 	Odometry odom;
 	Input gamepad;
-	double initialAngularVelocity = 0;
-	LowPassFilter filter = new LowPassFilter(0.2);
 
 	public ClosedLoopTeleop(Drivetrain drivetrain,Odometry odom,Input gamepad) {
 		super(drivetrain,odom,gamepad);
@@ -41,11 +38,16 @@ public class ClosedLoopTeleop extends Command {
 	public void periodic() {
 
 		double targetVelocity = gamepad.getRight_stick_x() * MAX_ANGULAR_VELOCITY;
+		double currentVelocity = odom.getVelocity().get(2);
+
 		Dashboard.packet.put("target velocity", targetVelocity);
-		double estimatedVelocity = filter.estimate(odom.getVelocity().get(2));
-		double command = feedforward.calculate(0,targetVelocity,0) + control.calculate(targetVelocity, estimatedVelocity);
+		Dashboard.packet.put("other gyro velocity", currentVelocity);
+
+ 		double feedforwardCommand = feedforward.calculate(0,targetVelocity,0);
+		double feedbackCommand = control.calculate(targetVelocity, currentVelocity);
 		double forward = -gamepad.getLeft_stick_y();
-		drivetrain.robotRelative(forward, command);
+
+		drivetrain.robotRelative(forward, feedforwardCommand + feedbackCommand);
 
 	}
 
