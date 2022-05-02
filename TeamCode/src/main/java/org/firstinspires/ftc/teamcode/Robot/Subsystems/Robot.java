@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.CommandFramework.CommandScheduler;
+import org.firstinspires.ftc.teamcode.Simulation.TestCommandsSubsystems.PrintSubsystem1;
 
 public class Robot {
 
@@ -18,13 +19,16 @@ public class Robot {
 	public Drivetrain drivetrain = new Drivetrain();
 	public Odometry odometry = new Odometry();
 
+	// print subsystem for testing
+	public PrintSubsystem1 print = new PrintSubsystem1();
+
 	protected CommandScheduler scheduler;
 
 	public Robot(HardwareMap hwMap, OpMode opMode, Gamepad gamepad1, Gamepad gamepad2) {
-		this.gamepad1 = new Input(gamepad1);
-		this.gamepad2 = new Input(gamepad2);
-
 		scheduler = new CommandScheduler(hwMap, drivetrain, odometry, dashboard);
+
+		this.gamepad1 = new Input(gamepad1, scheduler);
+		this.gamepad2 = new Input(gamepad2, scheduler);
 
 		if (opMode.equals(OpMode.Auto)) {
 			scheduler.initAuto();

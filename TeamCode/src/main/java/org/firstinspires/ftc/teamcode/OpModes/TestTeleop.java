@@ -6,6 +6,8 @@ import org.firstinspires.ftc.teamcode.CommandFramework.BaseTeleop;
 import org.firstinspires.ftc.teamcode.CommandFramework.CommandScheduler;
 import org.firstinspires.ftc.teamcode.CommandFramework.Command;
 import org.firstinspires.ftc.teamcode.Robot.Commands.DrivetrainCommands.DriveTeleop;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.Input;
+import org.firstinspires.ftc.teamcode.Simulation.TestCommandsSubsystems.PrintCommand1;
 
 
 @TeleOp
@@ -13,6 +15,9 @@ public class TestTeleop extends BaseTeleop {
 
 	@Override
 	public Command setupTeleop(CommandScheduler scheduler) {
+		Command printCommand = new PrintCommand1(robot.print, "Hello, World!");
+		robot.gamepad1.whenCrossPressed(printCommand);
+
 		return new DriveTeleop(robot.gamepad1,robot.drivetrain);
 	}
 }

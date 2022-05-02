@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Robot.Subsystems;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.CommandFramework.Command;
+import org.firstinspires.ftc.teamcode.CommandFramework.CommandScheduler;
 import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
 
 public class Input extends Subsystem {
@@ -10,7 +12,7 @@ public class Input extends Subsystem {
 	// the threshold at which a trigger is detected as a button press
 	public double TRIGGER_DETECTION_THRESHOLD = 0.75;
 
-
+	protected CommandScheduler scheduler;
 	Gamepad gamepad;
 	protected boolean cross = false;
 	protected boolean square = false;
@@ -75,7 +77,48 @@ public class Input extends Subsystem {
 	protected double touchpad_finger_2_x_prev = 0;
 	protected double touchpad_finger_2_y_prev = 0;
 
-	public Input(Gamepad gamepad1) { this.gamepad = gamepad1; }
+	// Command handler for each
+	protected Command cross_handler = null;
+	protected Command square_handler = null;
+	protected Command triangle_handler = null;
+	protected Command circle_handler = null;
+	protected Command left_stick_button_handler = null;
+	protected Command right_stick_button_handler = null;
+	protected Command dpad_up_handler = null;
+	protected Command dpad_left_handler = null;
+	protected Command dpad_down_handler = null;
+	protected Command dpad_right_handler = null;
+	protected Command share_button_handler = null;
+	protected Command options_handler = null;
+	protected Command ps_button_handler = null;
+	protected Command left_bumper_handler = null;
+	protected Command right_bumper_handler = null;
+	protected Command left_trigger_press_handler = null;
+	protected Command right_trigger_press_handler = null;	
+
+	// Command handler setter for each
+	public void whenCrossPressed(Command handler) { cross_handler = handler; }
+	public void whenSquarePressed(Command handler) { square_handler = handler; }
+	public void whenTrianglePressed(Command handler) { triangle_handler = handler; }
+	public void whenCirclePressed(Command handler) { circle_handler = handler; }
+	public void whenLeftStickButtonPressed(Command handler) { left_stick_button_handler = handler; }
+	public void whenRightStickButtonPressed(Command handler) { right_stick_button_handler = handler; }
+	public void whenDPadUpPressed(Command handler) { dpad_up_handler = handler; }
+	public void whenDPadLeftPressed(Command handler) { dpad_left_handler = handler; }
+	public void whenDPadDownPressed(Command handler) { dpad_down_handler = handler; }
+	public void whenDPadRightPressed(Command handler) { dpad_right_handler = handler; }
+	public void whenShareButtonPressed(Command handler) { share_button_handler = handler; }
+	public void whenOptionsPressed(Command handler) { options_handler = handler; }
+	public void whenPSButtonPressed(Command handler) { ps_button_handler = handler; }
+	public void whenLeftBumperPressed(Command handler) { left_bumper_handler = handler; }
+	public void whenRightBumperPressed(Command handler) { right_bumper_handler = handler; }
+	public void whenLeftTriggerPressed(Command handler) { left_trigger_press_handler = handler; }
+	public void whenRightTriggerPressed(Command handler) { right_trigger_press_handler = handler; }
+
+	public Input(Gamepad gamepad1, CommandScheduler scheduler) { 
+		this.gamepad = gamepad1; 
+		this.scheduler = scheduler;
+	}
 
 	@Override
 	public void initAuto(HardwareMap hwMap) { }
@@ -84,6 +127,7 @@ public class Input extends Subsystem {
 	public void periodic() {
 		updatePrevious();
 		readGamepad();
+		callHandlers();
 	}
 
 	@Override
@@ -157,6 +201,43 @@ public class Input extends Subsystem {
 		touchpad_finger_1_y_prev = touchpad_finger_1_y;
 		touchpad_finger_2_x_prev = touchpad_finger_2_x;
 		touchpad_finger_2_y_prev = touchpad_finger_2_y;
+	}
+
+	protected void callHandlers() {
+		if (isCrossPressed())
+			scheduler.forceCommand(cross_handler);
+		if (isSquarePressed())
+			scheduler.forceCommand(square_handler);
+		if (isTrianglePressed())
+			scheduler.forceCommand(triangle_handler);
+		if (isCirclePressed())
+			scheduler.forceCommand(circle_handler);
+		if (isLeftStickButtonPressed())
+			scheduler.forceCommand(left_stick_button_handler);
+		if (isRightStickButtonPressed())
+			scheduler.forceCommand(right_stick_button_handler);
+		if (isDpadUpPressed())
+			scheduler.forceCommand(dpad_up_handler);
+		if (isDpadLeftPressed())
+			scheduler.forceCommand(dpad_left_handler);
+		if (isDpadDownPressed())
+			scheduler.forceCommand(dpad_down_handler);
+		if (isDpadRightPressed())
+			scheduler.forceCommand(dpad_right_handler);
+		if (isShareButtonPressed())
+			scheduler.forceCommand(share_button_handler);
+		if (isOptionsButtonPressed())
+			scheduler.forceCommand(options_handler);
+		if (isPs_button())
+			scheduler.forceCommand(ps_button_handler);
+		if (isLeftBumperPressed())
+			scheduler.forceCommand(left_bumper_handler);
+		if (isRightBumperPressed())
+			scheduler.forceCommand(right_bumper_handler);
+		if (isLeftTriggerPressed())
+			scheduler.forceCommand(left_trigger_press_handler);
+		if (isRightTriggerPressed())
+			scheduler.forceCommand(right_trigger_press_handler);
 	}
 
 	public double getTRIGGER_DETECTION_THRESHOLD() {
