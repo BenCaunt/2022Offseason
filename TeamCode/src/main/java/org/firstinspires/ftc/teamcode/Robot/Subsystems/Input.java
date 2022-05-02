@@ -204,39 +204,39 @@ public class Input extends Subsystem {
 	}
 
 	protected void callHandlers() {
-		if (isCrossPressed() && cross_handler != null) {
+		if (isCrossPressed() && cross_handler != null)
 			scheduler.forceCommand(cross_handler);
-		if (isSquarePressed() && square_handler != null) {
+		if (isSquarePressed() && square_handler != null)
 			scheduler.forceCommand(square_handler);
-		if (isTrianglePressed() && triangle_handler != null) {
+		if (isTrianglePressed() && triangle_handler != null)
 			scheduler.forceCommand(triangle_handler);
-		if (isCirclePressed() && circle_handler != null) {
+		if (isCirclePressed() && circle_handler != null)
 			scheduler.forceCommand(circle_handler);
-		if (isLeftStickButtonPressed() && left_stick_button_handler != null) {
+		if (isLeftStickButtonPressed() && left_stick_button_handler != null)
 			scheduler.forceCommand(left_stick_button_handler);
-		if (isRightStickButtonPressed() && right_stick_button_handler != null) {
+		if (isRightStickButtonPressed() && right_stick_button_handler != null)
 			scheduler.forceCommand(right_stick_button_handler);
-		if (isDpadUpPressed() && dpad_up_handler != null) {
+		if (isDpadUpPressed() && dpad_up_handler != null)
 			scheduler.forceCommand(dpad_up_handler);
-		if (isDpadLeftPressed() && dpad_left_handler != null) {
+		if (isDpadLeftPressed() && dpad_left_handler != null)
 			scheduler.forceCommand(dpad_left_handler);
-		if (isDpadDownPressed() && dpad_down_handler != null) {
+		if (isDpadDownPressed() && dpad_down_handler != null)
 			scheduler.forceCommand(dpad_down_handler);
-		if (isDpadRightPressed() && dpad_right_handler != null) {
+		if (isDpadRightPressed() && dpad_right_handler != null)
 			scheduler.forceCommand(dpad_right_handler);
-		if (isShareButtonPressed() && share_button_handler != null) {
+		if (isShareButtonPressed() && share_button_handler != null)
 			scheduler.forceCommand(share_button_handler);
-		if (isOptionsButtonPressed() && options_handler != null) {
+		if (isOptionsButtonPressed() && options_handler != null)
 			scheduler.forceCommand(options_handler);
-		if (isPs_button() && ps_button_handler != null) {
+		if (isPs_button() && ps_button_handler != null)
 			scheduler.forceCommand(ps_button_handler);
-		if (isLeftBumperPressed() && left_bumper_handler != null) {
+		if (isLeftBumperPressed() && left_bumper_handler != null)
 			scheduler.forceCommand(left_bumper_handler);
-		if (isRightBumperPressed() && right_bumper_handler != null) {
+		if (isRightBumperPressed() && right_bumper_handler != null)
 			scheduler.forceCommand(right_bumper_handler);
-		if (isLeftTriggerPressed() && left_trigger_handler != null) {
+		if (isLeftTriggerPressed() && left_trigger_press_handler != null)
 			scheduler.forceCommand(left_trigger_press_handler);
-		if (isRightTriggerPressed() && right_trigger_handler != null) {
+		if (isRightTriggerPressed() && right_trigger_press_handler != null)
 			scheduler.forceCommand(right_trigger_press_handler);
 	}
 
