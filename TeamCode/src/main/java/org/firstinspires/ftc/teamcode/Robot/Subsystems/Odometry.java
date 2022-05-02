@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
+import org.firstinspires.ftc.teamcode.Math.Geometry.Pose2d;
+import org.firstinspires.ftc.teamcode.Math.Geometry.Rotation2d;
 import org.firstinspires.ftc.teamcode.Utils.ExtraUtils;
 
 import static org.firstinspires.ftc.teamcode.Utils.ExtraUtils.drawRobot;
@@ -113,6 +115,14 @@ public class Odometry extends Subsystem {
 
 	public Vector getPosition() {
 		return position;
+	}
+
+	public Pose2d getPose() {
+		return new Pose2d(
+				position.get(0),
+				position.get(1),
+				new Rotation2d(position.get(2))
+		);
 	}
 
 	public Vector getVelocity() {

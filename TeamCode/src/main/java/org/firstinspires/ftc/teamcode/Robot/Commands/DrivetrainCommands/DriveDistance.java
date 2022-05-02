@@ -24,6 +24,8 @@ public class DriveDistance extends Command {
 	private boolean isComplete = false;
 
 	public DriveDistance(Drivetrain drivetrain, Odometry odom, double targetDistance) {
+		super(drivetrain, odom);
+
 		this.drivetrain = drivetrain;
 		this.odom = odom;
 		this.targetDistance = targetDistance;
