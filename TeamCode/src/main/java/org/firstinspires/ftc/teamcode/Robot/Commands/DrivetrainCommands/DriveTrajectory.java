@@ -30,7 +30,7 @@ public class DriveTrajectory extends Command {
 //    TurnOnlyControl turnController;
     SqrtControl angleController = new SqrtControl(ControlConstants.angleControl);
     BasicPID angleController2 = new BasicPID(ControlConstants.AngularVelocityTeleop);
-    AngleController angleControl = new AngleController(angleController2);
+    AngleController angleControl = new AngleController(angleController);
     BasicPID distanceController = new BasicPID(ControlConstants.distanceControl);
     ElapsedTime timer;
 
@@ -51,32 +51,30 @@ public class DriveTrajectory extends Command {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void periodic() {
-//        double headingErrorPre = MathUtils.normalizedHeadingError(
-//                odometry.getPose().getHeading(),
-//                odometry.getPose().angleBetween(trajectory.targetPose(timer.seconds()))
-//        );
-        double headingErrorPre = MathUtils.normalizedHeadingError(
-                odometry.getPose().getHeading(),
-                odometry.getPose().angleBetween(trajectory.targetPose(timer.seconds()))
+        double sign = 1;
+
+        double headingError = -MathUtils.normalizedHeadingError(
+                odometry.getPose().angleBetween(trajectory.nextPose(timer.seconds())),
+                odometry.getPose().getHeading()
         );
 
-        double headingError = headingErrorPre;
-
-        if (trajectoryFollowingSign(headingErrorPre) < 0)
-            headingError = MathUtils.normalizedHeadingError(
-                    odometry.getPose().rotate(Math.toRadians(180)).getHeading(),
-                    odometry.getPose().rotate(Math.toRadians(180)).angleBetween(trajectory.targetPose(timer.seconds()))
+        if (trajectoryFollowingSign(headingError) < 0) {
+            headingError = -MathUtils.normalizedHeadingError(
+                    odometry.getPose().rotate(Math.toRadians(180)).angleBetween(trajectory.nextPose(timer.seconds())),
+                    odometry.getPose().rotate(Math.toRadians(180)).getHeading()
             );
-//
+            sign = -1;
+        }
+
         double turnSpeed = angleControl.calculate(0, headingError);
 
         double forwardSpeed = -distanceController.calculate(
                 0,
                 odometry.getPose().distanceBetween(trajectory.targetPose(timer.seconds()))
-        ) * trajectoryFollowingSign(headingError);
-        forwardSpeed = Range.clip(forwardSpeed, 0, 0.5);
+        ) * sign;
+        forwardSpeed = Range.clip(forwardSpeed, -0.5, 0.5);
 
-        double headingScale = Range.clip(Math.cos(headingError), 0, 1);
+        double headingScale = Math.abs(Math.cos(headingError));
 
 //        Vector turnSpeeds = turnController.calculate();
 //
@@ -89,8 +87,11 @@ public class DriveTrajectory extends Command {
         Dashboard.packet.put("Target Pose", trajectory.targetPose(timer.seconds()));
         Dashboard.packet.put("Time", timer.seconds());
         Dashboard.packet.put("Distance Between", odometry.getPose().distanceBetween(trajectory.targetPose(timer.seconds())));
-        Dashboard.packet.put("Angle Between", odometry.getPose().angleBetween(trajectory.targetPose(timer.seconds())));
-//        Dashboard.packet.put("Angle Between", headingError);
+        Dashboard.packet.put("Angle Between", odometry.getPose().angleBetween(trajectory.nextPose(timer.seconds())));
+        Dashboard.packet.put("Heading Error", headingError);
+        Dashboard.packet.put("Trajectory Sign", sign);
+        Dashboard.packet.put("Current Heading", odometry.getPose().getHeading());
+
 
         drawRobotTarget(trajectory.targetPose(timer.seconds()), Dashboard.packet);
 //        drivetrain.setPower(
@@ -108,8 +109,8 @@ public class DriveTrajectory extends Command {
 
     @Override
     public boolean completed() {
-//        return timer.seconds() > trajectory.endTime && odometry.getPose().distanceBetween(trajectory.targetPose(timer.seconds())) < 1;
-        return false;
+        return timer.seconds() > trajectory.endTime &&
+                odometry.getPose().distanceBetween(trajectory.targetPose(timer.seconds())) < 0.3;
     }
 
     @Override

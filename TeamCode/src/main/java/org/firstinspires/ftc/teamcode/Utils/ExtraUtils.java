@@ -39,6 +39,8 @@ public class ExtraUtils {
 	}
 
 
+	public static final double FIELD_SCALE_FACTOR = 3;
+
 	public static void drawRobot(Vector position, TelemetryPacket packet) {
 
 		Pose2d pose = new Pose2d(position.get(0),position.get(1),new Rotation2d(position.get(2)));
@@ -53,8 +55,8 @@ public class ExtraUtils {
 
 		packet.fieldOverlay()
 				.setStroke("black")
-				.strokeCircle(pose.getX(), pose.getY(), ROBOT_RADIUS)
-				.strokeLine(x1, y1, x2, y2);
+				.strokeCircle(pose.getX() / FIELD_SCALE_FACTOR, pose.getY() / FIELD_SCALE_FACTOR, ROBOT_RADIUS)
+				.strokeLine(x1 / FIELD_SCALE_FACTOR, y1 / FIELD_SCALE_FACTOR, x2 / FIELD_SCALE_FACTOR, y2 / FIELD_SCALE_FACTOR);
 
 
 	}
@@ -90,8 +92,8 @@ public class ExtraUtils {
 
 		packet.fieldOverlay()
 				.setStroke("Green")
-				.strokeCircle(pose.getX(), pose.getY(), ROBOT_RADIUS)
-				.strokeLine(x1, y1, x2, y2);
+				.strokeCircle(pose.getX() / FIELD_SCALE_FACTOR, pose.getY() / FIELD_SCALE_FACTOR, ROBOT_RADIUS)
+				.strokeLine(x1 / FIELD_SCALE_FACTOR, y1 / FIELD_SCALE_FACTOR, x2 / FIELD_SCALE_FACTOR, y2 / FIELD_SCALE_FACTOR);
 
 
 	}

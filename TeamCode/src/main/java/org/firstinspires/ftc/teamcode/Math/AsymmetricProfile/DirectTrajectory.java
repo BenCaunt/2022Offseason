@@ -18,8 +18,9 @@ public class DirectTrajectory {
     }
 
     public Pose2d targetPose(double time) {
-        if (time >= endTime)
+        if (time >= endTime) {
             return points.get(points.size() - 1);
+        }
 
         int pointIndex = 0;
         while (pointIndex + 1 < points.size() && pointTimes.get(pointIndex + 1) < time)
@@ -38,5 +39,18 @@ public class DirectTrajectory {
         );
 
         return interpolatedPose;
+    }
+
+    public Pose2d nextPose(double time) {
+        if (time >= endTime)
+            return points.get(points.size() - 1);
+
+        int pointIndex = 0;
+        while (pointIndex + 1 < points.size() && pointTimes.get(pointIndex + 1) < time)
+            pointIndex++;
+
+        Pose2d nextPose = points.get(pointIndex + 1);
+
+        return nextPose;
     }
 }

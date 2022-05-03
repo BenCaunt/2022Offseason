@@ -32,25 +32,63 @@ public class TestAuto extends BaseAuto {
 //				.addNext(drive(-80));
 		robot.odometry.setEstimate(new Vector(new double[]{0, 0, 0}));
 
+//		DirectTrajectory trajectory = new DirectTrajectory(
+//				new ArrayList<>(List.of(
+//						new Pose2d(0, 0, new Rotation2d(0)),
+//						new Pose2d(50, -10, new Rotation2d(0)),
+//						new Pose2d(40, 40, new Rotation2d(0)),
+//						new Pose2d(15, 40, new Rotation2d(0)),
+//						new Pose2d(0, 0, new Rotation2d(0))
+//				)),
+//				new ArrayList<Double>(List.of(
+//						0.0,
+//						1.5,
+//						5.0,
+//						8.5,
+//						11.5
+//				))
+//		);
+
+//		DirectTrajectory trajectory = new DirectTrajectory(
+//				new ArrayList<>(List.of(
+//						new Pose2d(0, 0, new Rotation2d(0)),
+//						new Pose2d(0, 90, new Rotation2d(0)),
+//						new Pose2d(100, 90, new Rotation2d(0)),
+//						new Pose2d(130, 45, new Rotation2d(0)),
+//						new Pose2d(15, 0, new Rotation2d(0)),
+//						new Pose2d(0, 0, new Rotation2d(0))
+//				)),
+//				new ArrayList<Double>(List.of(
+//						0.0,
+//						4.0,
+//						10.0,
+//						12.0,
+//						15.0,
+//						18.0,
+//						19.5,
+//						21.0
+//				))
+//		);
+
 		DirectTrajectory trajectory = new DirectTrajectory(
 				new ArrayList<>(List.of(
 						new Pose2d(0, 0, new Rotation2d(0)),
-						new Pose2d(50, 0, new Rotation2d(0)),
-						new Pose2d(50, 50, new Rotation2d(0)),
-						new Pose2d(0, 50, new Rotation2d(0)),
+						new Pose2d(40, 40, new Rotation2d(0)),
+						new Pose2d(40, -20, new Rotation2d(0)),
+						new Pose2d(90, 0, new Rotation2d(0)),
 						new Pose2d(0, 0, new Rotation2d(0))
 				)),
 				new ArrayList<Double>(List.of(
 						0.0,
-						1.5,
-						5.0,
-						8.5,
-						11.5
+						2.0,
+						4.0,
+						6.0,
+						8.0
 				))
 		);
 
 		Command followTrajectory = new DriveTrajectory(robot.drivetrain, robot.odometry, trajectory);
 
-		return followTrajectory;
+		return followTrajectory.addNext(turn(0));
 	}
 }

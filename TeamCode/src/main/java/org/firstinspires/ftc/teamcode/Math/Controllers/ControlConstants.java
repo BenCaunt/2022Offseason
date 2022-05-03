@@ -7,10 +7,10 @@ import org.firstinspires.ftc.teamcode.Math.AsymmetricProfile.MotionConstraint;
 import org.firstinspires.ftc.teamcode.Math.Controllers.Coefficient.SqrtCoefficients;
 
 public class ControlConstants {
-	public static PIDCoefficients distanceControl = new PIDCoefficients(0.1,0,0);
-	public static SqrtCoefficients angleControl = new SqrtCoefficients(0.1, 0.05,0);
+	public static PIDCoefficients distanceControl = new PIDCoefficients(0.03,0,0);
+	public static SqrtCoefficients angleControl = new SqrtCoefficients(0.32, 0.05,0);
 
-	public static PIDCoefficients AngularVelocityTeleop = new PIDCoefficients(0.15, 0,0);
+	public static PIDCoefficients AngularVelocityTeleop = new PIDCoefficients(0.1, 0,0);
 	public static FeedforwardCoefficients AngularVelocityTeleopFF = new FeedforwardCoefficients(0.15,0,0);
 
 
