@@ -8,11 +8,13 @@ import java.util.ArrayList;
 public class DirectTrajectory {
     protected ArrayList<Pose2d> points;
     protected ArrayList<Double> pointTimes;
-    protected double endTime;
+    public double endTime;
 
     public DirectTrajectory(ArrayList<Pose2d> points, ArrayList<Double> pointTimes) {
         this.points = points;
         this.pointTimes = pointTimes;
+
+        this.endTime = pointTimes.get(points.size() - 1);
     }
 
     public Pose2d targetPose(double time) {
@@ -20,7 +22,7 @@ public class DirectTrajectory {
             return points.get(points.size() - 1);
 
         int pointIndex = 0;
-        while (pointIndex + 1 < points.size() && pointTimes.get(pointIndex + 1) <= time)
+        while (pointIndex + 1 < points.size() && pointTimes.get(pointIndex + 1) < time)
             pointIndex++;
 
         Pose2d latestPose = points.get(pointIndex);
@@ -30,7 +32,7 @@ public class DirectTrajectory {
         double nextPoseTime = pointTimes.get(pointIndex + 1);
 
         Pose2d interpolatedPose = new Pose2d(
-                latestPose.getX() + (nextPose.getX() - latestPose.getX()) * (time - latestPoseTime) / (nextPoseTime - latestPoseTime),
+                 latestPose.getX() + (nextPose.getX() - latestPose.getX()) * (time - latestPoseTime) / (nextPoseTime - latestPoseTime),
                 latestPose.getY() + (nextPose.getY() - latestPose.getY()) * (time - latestPoseTime) / (nextPoseTime - latestPoseTime),
                 new Rotation2d(latestPose.angleBetween(nextPose))
         );

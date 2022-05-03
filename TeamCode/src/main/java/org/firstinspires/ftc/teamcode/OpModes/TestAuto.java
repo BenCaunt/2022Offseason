@@ -30,19 +30,22 @@ public class TestAuto extends BaseAuto {
 //				.addNext(drive(-40))
 //				.addNext(turn(Math.toRadians(0)))
 //				.addNext(drive(-80));
+		robot.odometry.setEstimate(new Vector(new double[]{0, 0, 0}));
 
 		DirectTrajectory trajectory = new DirectTrajectory(
 				new ArrayList<>(List.of(
 						new Pose2d(0, 0, new Rotation2d(0)),
-						new Pose2d(0, 10, new Rotation2d(0)),
-						new Pose2d(5, 15, new Rotation2d(0)),
-						new Pose2d(10, 20, new Rotation2d(0))
+						new Pose2d(50, 0, new Rotation2d(0)),
+						new Pose2d(50, 50, new Rotation2d(0)),
+						new Pose2d(0, 50, new Rotation2d(0)),
+						new Pose2d(0, 0, new Rotation2d(0))
 				)),
 				new ArrayList<Double>(List.of(
 						0.0,
-						2.0,
-						4.0,
-						6.0
+						1.5,
+						5.0,
+						8.5,
+						11.5
 				))
 		);
 

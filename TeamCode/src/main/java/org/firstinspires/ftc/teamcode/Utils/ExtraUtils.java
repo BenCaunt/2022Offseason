@@ -77,5 +77,22 @@ public class ExtraUtils {
 
 
 	}
+	public static void drawRobotTarget(Pose2d pose, TelemetryPacket packet) {
 
+		double ROBOT_RADIUS = 8;
+		Vector2d v = new Vector2d(Math.cos(pose.getHeading()), Math.sin(pose.getHeading())).times(ROBOT_RADIUS);
+
+		double x1 = pose.getX() + v.getX() / 2;
+		double y1 = pose.getY() + v.getY() / 2;
+		double x2 = pose.getX() + v.getX();
+		double y2 = pose.getY() + v.getY();
+
+
+		packet.fieldOverlay()
+				.setStroke("Green")
+				.strokeCircle(pose.getX(), pose.getY(), ROBOT_RADIUS)
+				.strokeLine(x1, y1, x2, y2);
+
+
+	}
 }

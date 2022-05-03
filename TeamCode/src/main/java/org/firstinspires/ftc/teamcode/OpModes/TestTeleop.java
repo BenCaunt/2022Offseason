@@ -18,6 +18,7 @@ public class TestTeleop extends BaseTeleop {
 	public Command setupTeleop(CommandScheduler scheduler) {
 		Command printCommand = new PrintCommand1(robot.print, "Hello, World!");
 		robot.gamepad1.whenCrossPressed(printCommand);
+
 		return new ClosedLoopTeleop(robot.drivetrain,robot.odometry,robot.gamepad1);
 //		return new DriveTeleop(robot.gamepad1, robot.drivetrain);
 	}

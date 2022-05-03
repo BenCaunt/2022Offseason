@@ -8,9 +8,9 @@ import org.firstinspires.ftc.teamcode.Math.Controllers.Coefficient.SqrtCoefficie
 
 public class ControlConstants {
 	public static PIDCoefficients distanceControl = new PIDCoefficients(0.1,0,0);
-	public static SqrtCoefficients angleControl = new SqrtCoefficients(0.45, 0.05,0);
+	public static SqrtCoefficients angleControl = new SqrtCoefficients(0.1, 0.05,0);
 
-	public static PIDCoefficients AngularVelocityTeleop = new PIDCoefficients(0.05, 0,0);
+	public static PIDCoefficients AngularVelocityTeleop = new PIDCoefficients(0.15, 0,0);
 	public static FeedforwardCoefficients AngularVelocityTeleopFF = new FeedforwardCoefficients(0.15,0,0);
 
 
