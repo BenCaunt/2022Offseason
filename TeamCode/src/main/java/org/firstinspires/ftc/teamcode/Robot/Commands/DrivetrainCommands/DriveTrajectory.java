@@ -56,13 +56,17 @@ public class DriveTrajectory extends Command {
         double sign = 1;
 
         double headingError = -MathUtils.normalizedHeadingError(
-                odometry.getPose().angleBetween(trajectory.nextPose(timer.seconds())),
+//                odometry.getPose().angleBetween(trajectory.nextPose(timer.seconds())),
+                odometry.getPose().angleBetween(trajectory.targetPose(timer.seconds() + 0.1)),
                 odometry.getPose().getHeading()
         );
 
+
+
         if (trajectoryFollowingSign(headingError) < 0) {
             headingError = -MathUtils.normalizedHeadingError(
-                    odometry.getPose().rotate(Math.toRadians(180)).angleBetween(trajectory.nextPose(timer.seconds())),
+//                    odometry.getPose().rotate(Math.toRadians(180)).angleBetween(trajectory.nextPose(timer.seconds())),
+                    odometry.getPose().rotate(Math.toRadians(180)).angleBetween(trajectory.targetPose(timer.seconds() + 0.1)),
                     odometry.getPose().rotate(Math.toRadians(180)).getHeading()
             );
             sign = -1;

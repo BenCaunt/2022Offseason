@@ -1,11 +1,19 @@
 package org.firstinspires.ftc.teamcode.Utils;
 
+import android.os.Environment;
+
 import com.ThermalEquilibrium.homeostasis.Utils.Vector;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 
+import org.checkerframework.checker.units.qual.A;
+import org.firstinspires.ftc.teamcode.Math.AsymmetricProfile.DirectTrajectory;
 import org.firstinspires.ftc.teamcode.Math.Geometry.Pose2d;
 import org.firstinspires.ftc.teamcode.Math.Geometry.Rotation2d;
 import org.firstinspires.ftc.teamcode.Math.Geometry.Vector2d;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
 
 
 public class ExtraUtils {
@@ -39,7 +47,7 @@ public class ExtraUtils {
 	}
 
 
-	public static final double FIELD_SCALE_FACTOR = 3;
+	public static final double FIELD_SCALE_FACTOR = 1;
 
 	public static void drawRobot(Vector position, TelemetryPacket packet) {
 
@@ -96,5 +104,33 @@ public class ExtraUtils {
 				.strokeLine(x1 / FIELD_SCALE_FACTOR, y1 / FIELD_SCALE_FACTOR, x2 / FIELD_SCALE_FACTOR, y2 / FIELD_SCALE_FACTOR);
 
 
+	}
+
+	public static DirectTrajectory parseTrajectory(String filename) {
+		ArrayList<Pose2d> poses = new ArrayList<Pose2d>();
+		ArrayList<Double> times = new ArrayList<Double>();
+
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader( "/sdcard/FIRST/" + filename));
+
+			String line;
+			reader.readLine();
+			while ((line = reader.readLine()) != null) {
+				String[] poseInfo = line.split(",");
+
+				double time = Double.parseDouble(poseInfo[0]);
+				double x = Double.parseDouble(poseInfo[1]);
+				double y = Double.parseDouble(poseInfo[2]);
+
+				System.out.print("X: " + x);
+
+				times.add(time);
+				poses.add(new Pose2d(x, y, new Rotation2d(0)));
+			}
+		} catch (Exception e) {
+			// nothing we can do lol
+		}
+
+		return new DirectTrajectory(poses, times);
 	}
 }
