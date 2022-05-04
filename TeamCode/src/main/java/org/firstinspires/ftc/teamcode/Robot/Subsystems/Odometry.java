@@ -81,6 +81,8 @@ public class Odometry extends Subsystem {
 		Dashboard.packet.put("x",position.get(0));
 		Dashboard.packet.put("y",position.get(1));
 		Dashboard.packet.put("theta",position.get(2));
+		Dashboard.packet.put("left encoder",leftEncoder.getCurrentPosition());
+		Dashboard.packet.put("right encoder",rightEncoder.getCurrentPosition());
 
 		timer.reset();
 
