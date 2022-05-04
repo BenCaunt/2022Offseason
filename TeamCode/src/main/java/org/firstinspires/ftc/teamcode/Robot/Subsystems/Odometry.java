@@ -99,7 +99,7 @@ public class Odometry extends Subsystem {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//position.set(imuAngle,2);
+		position.set(imuAngle,2);
 
 		drawRobot(position, Dashboard.packet);
 
