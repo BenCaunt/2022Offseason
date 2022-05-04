@@ -33,7 +33,7 @@ public class TestAuto extends BaseAuto {
 //				.addNext(drive(-80));
 		robot.odometry.setEstimate(new Vector(new double[]{0, 0, 0}));
 
-		DirectTrajectory trajectory = ExtraUtils.parseTrajectory("path1.csv");
+		DirectTrajectory trajectory = ExtraUtils.parseTrajectory("path1");
 
 		Command followTrajectory = new DriveTrajectory(robot.drivetrain, robot.odometry, trajectory);
 

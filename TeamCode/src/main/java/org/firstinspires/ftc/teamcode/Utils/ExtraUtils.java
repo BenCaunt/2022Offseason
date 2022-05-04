@@ -111,7 +111,7 @@ public class ExtraUtils {
 		ArrayList<Double> times = new ArrayList<Double>();
 
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader( "/sdcard/FIRST/" + filename));
+			BufferedReader reader = new BufferedReader(new FileReader( "/sdcard/FIRST/" + filename + ".csv"));
 
 			String line;
 			reader.readLine();
