@@ -46,7 +46,9 @@ public class DriveTrajectory extends Command {
     }
 
     @Override
-    public void init() { }
+    public void init() {
+
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
