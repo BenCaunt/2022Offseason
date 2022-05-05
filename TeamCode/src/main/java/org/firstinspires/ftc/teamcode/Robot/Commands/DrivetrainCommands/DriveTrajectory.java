@@ -13,7 +13,7 @@ import com.ThermalEquilibrium.homeostasis.Utils.MathUtils;
 
 import org.firstinspires.ftc.teamcode.CommandFramework.Command;
 import org.firstinspires.ftc.teamcode.Math.AsymmetricProfile.DirectTrajectory;
-import org.firstinspires.ftc.teamcode.Math.Controllers.ControlConstants;
+import org.firstinspires.ftc.teamcode.Robot.ControlConstants;
 import org.firstinspires.ftc.teamcode.Math.Controllers.SqrtControl;
 import org.firstinspires.ftc.teamcode.Math.Geometry.Pose2d;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.Dashboard;

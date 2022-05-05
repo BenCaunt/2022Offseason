@@ -9,8 +9,10 @@ import com.ThermalEquilibrium.homeostasis.Utils.MathUtils;
 import com.ThermalEquilibrium.homeostasis.Utils.Vector;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Robot.ControlConstants;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.Dashboard;
 import org.firstinspires.ftc.teamcode.Math.AsymmetricProfile.AsymmetricMotionProfile;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.Robot;
 
 import java.util.function.DoubleSupplier;
 
@@ -28,14 +30,22 @@ public class TurnOnlyControl {
 	ElapsedTime timer = new ElapsedTime();
 	AsymmetricMotionProfile profile_n;
 
-	SqrtControl angleController = new SqrtControl(ControlConstants.angleControl);
-	AngleController angleControl = new AngleController(angleController);
+
+	SqrtControl angleController;
+
+	AngleController angleControl;
 
 	double trackingError = 0;
 
 	public TurnOnlyControl(DoubleSupplier robotAngle, double headingReference) {
 		this.robotAngle = robotAngle;
 		this.headingReference = headingReference;
+		if (Robot.IS_NEW_6wd) {
+			angleController = new SqrtControl(ControlConstants.angleControl2);
+		} else {
+			angleController = new SqrtControl(ControlConstants.angleControl);
+		}
+		angleControl = new AngleController(angleController);
 	}
 
 	/**

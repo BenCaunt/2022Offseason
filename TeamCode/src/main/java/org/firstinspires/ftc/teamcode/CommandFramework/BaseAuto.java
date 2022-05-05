@@ -21,8 +21,11 @@ public abstract class BaseAuto extends LinearOpMode {
 
 		robot.getScheduler().forceCommand(setupAuto(robot.getScheduler()));
 
-		while(opModeIsActive())
+		while (opModeIsActive()) {
+			System.out.println("angular velocity test: " + robot.drivetrain.getLeftPower() + " , " + robot.drivetrain.getRightPower() + " , " + robot.odometry.getVelocity().get(2));
 			robot.update();
+		}
+
 	}
 
 	public abstract Command setupAuto(CommandScheduler scheduler);
