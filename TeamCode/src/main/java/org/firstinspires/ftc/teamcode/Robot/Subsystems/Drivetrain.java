@@ -44,8 +44,47 @@ public class Drivetrain extends Subsystem {
 		BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 		BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-		FrontLeft.setDirection(DcMotorEx.Direction.FORWARD);
-		FrontRight.setDirection(DcMotorEx.Direction.REVERSE);
+		if (Robot.IS_NEW_6wd) {
+			FrontLeft.setDirection(DcMotorEx.Direction.REVERSE);
+			FrontRight.setDirection(DcMotorEx.Direction.FORWARD);
+		} else {
+			FrontLeft.setDirection(DcMotorEx.Direction.FORWARD);
+			FrontRight.setDirection(DcMotorEx.Direction.REVERSE);
+
+		}{
+			this.hwMap = hwMap;
+
+			FrontLeft = hwMap.get(DcMotorEx.class, "FrontLeft");
+			FrontRight = hwMap.get(DcMotorEx.class, "FrontRight");
+			BackLeft = hwMap.get(DcMotorEx.class, "BackLeft");
+			BackRight = hwMap.get(DcMotorEx.class, "BackRight");
+
+			FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+			FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+			BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+			BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+			FrontLeft.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+			FrontRight.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+			BackLeft.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+			BackRight.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+
+			FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+			FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+			BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+			BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+			if (Robot.IS_NEW_6wd) {
+				FrontLeft.setDirection(DcMotorEx.Direction.REVERSE);
+				FrontRight.setDirection(DcMotorEx.Direction.FORWARD);
+			} else {
+				FrontLeft.setDirection(DcMotorEx.Direction.FORWARD);
+				FrontRight.setDirection(DcMotorEx.Direction.REVERSE);
+
+			}
+			BackLeft.setDirection(DcMotorEx.Direction.FORWARD);
+			BackRight.setDirection(DcMotorEx.Direction.REVERSE);
+		}
 		BackLeft.setDirection(DcMotorEx.Direction.FORWARD);
 		BackRight.setDirection(DcMotorEx.Direction.REVERSE);
 	}
@@ -94,5 +133,13 @@ public class Drivetrain extends Subsystem {
 	@Override
 	public void shutdown() {
 		setPower(0,0);
+	}
+
+	public double getLeftPower() {
+		return leftPower;
+	}
+
+	public double getRightPower() {
+		return rightPower;
 	}
 }

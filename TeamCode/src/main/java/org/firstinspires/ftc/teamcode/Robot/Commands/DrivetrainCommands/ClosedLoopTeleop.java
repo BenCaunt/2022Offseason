@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Robot.Commands.DrivetrainCommands;
 
 import com.ThermalEquilibrium.homeostasis.Controllers.Feedback.BasicPID;
 import com.ThermalEquilibrium.homeostasis.Controllers.Feedforward.BasicFeedforward;
-import com.ThermalEquilibrium.homeostasis.Filters.FilterAlgorithms.LowPassFilter;
 
 import org.firstinspires.ftc.teamcode.CommandFramework.Command;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.Dashboard;
@@ -10,8 +9,8 @@ import org.firstinspires.ftc.teamcode.Robot.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.Input;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.Odometry;
 
-import static org.firstinspires.ftc.teamcode.Math.Controllers.ControlConstants.AngularVelocityTeleop;
-import static org.firstinspires.ftc.teamcode.Math.Controllers.ControlConstants.AngularVelocityTeleopFF;
+import static org.firstinspires.ftc.teamcode.Robot.ControlConstants.AngularVelocityTeleop;
+import static org.firstinspires.ftc.teamcode.Robot.ControlConstants.AngularVelocityTeleopFF;
 
 public class ClosedLoopTeleop extends Command {
 

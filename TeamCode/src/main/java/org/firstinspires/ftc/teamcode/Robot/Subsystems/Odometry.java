@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
 import org.firstinspires.ftc.teamcode.Math.Geometry.Pose2d;
 import org.firstinspires.ftc.teamcode.Math.Geometry.Rotation2d;
@@ -26,8 +27,6 @@ public class Odometry extends Subsystem {
 	double trackWidth = 35.70453809697589;
 	double velocityX = 0;
 	double velocityTheta = 0;
-	double velocityKalman = 0;
-	double velocityLowPass = 0;
 	double thetaZeroAngle = 0;
 
 	Vector position = new Vector(3);
@@ -70,19 +69,20 @@ public class Odometry extends Subsystem {
 		double xDelta = (leftDelta + rightDelta) / 2;
 		double yDelta = 0;
 		double thetaDelta = (rightDelta - leftDelta) / (trackWidth);
-		velocityTheta = -imu.getAngularVelocity().xRotationRate; //thetaDelta / timer.seconds();
-//		velocityKalman = kf.estimate(velocityTheta);
-//		velocityLowPass = lowPassFilter.estimate(velocityTheta);
-		double gyroVelocity = imu.getAngularVelocity().xRotationRate;
-		Dashboard.packet.put("Angular velocity",velocityTheta);
-		Dashboard.packet.put("Angular velocity KF",velocityKalman);
-		Dashboard.packet.put("Angular velocity Low pass",velocityLowPass);
+		AngularVelocity imuAngularVelocity = imu.getAngularVelocity();
+		double gyroVelocity;
+		if (Robot.IS_NEW_6wd) {
+			gyroVelocity = imuAngularVelocity.zRotationRate;
+		} else {
+			gyroVelocity = imuAngularVelocity.xRotationRate;
+		}
+		velocityTheta = gyroVelocity;
 		Dashboard.packet.put("gyro velocity",gyroVelocity);
-		Dashboard.packet.put("x",position.get(0));
-		Dashboard.packet.put("y",position.get(1));
-		Dashboard.packet.put("theta",position.get(2));
 		Dashboard.packet.put("left encoder",leftEncoder.getCurrentPosition());
 		Dashboard.packet.put("right encoder",rightEncoder.getCurrentPosition());
+		Dashboard.packet.put("x angular",imuAngularVelocity.xRotationRate);
+		Dashboard.packet.put("y angular",imuAngularVelocity.yRotationRate);
+		Dashboard.packet.put("z angular",imuAngularVelocity.zRotationRate);
 
 		timer.reset();
 
