@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Robot.Commands.DrivetrainCommands;
 
 import static org.firstinspires.ftc.teamcode.Utils.ExtraUtils.drawRobotTarget;
+import static org.firstinspires.ftc.teamcode.Utils.ExtraUtils.drawRobotTrajectory;
 
 import android.os.Build;
 
@@ -9,18 +10,18 @@ import androidx.annotation.RequiresApi;
 import com.ThermalEquilibrium.homeostasis.Controllers.Feedback.AngleController;
 import com.ThermalEquilibrium.homeostasis.Controllers.Feedback.BasicPID;
 import com.ThermalEquilibrium.homeostasis.Utils.MathUtils;
-import com.ThermalEquilibrium.homeostasis.Utils.Vector;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.CommandFramework.Command;
 import org.firstinspires.ftc.teamcode.Math.AsymmetricProfile.DirectTrajectory;
 import org.firstinspires.ftc.teamcode.Math.Controllers.ControlConstants;
 import org.firstinspires.ftc.teamcode.Math.Controllers.SqrtControl;
-import org.firstinspires.ftc.teamcode.Math.Controllers.TurnOnlyControl;
+import org.firstinspires.ftc.teamcode.Math.Geometry.Pose2d;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.Dashboard;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.Odometry;
+import org.firstinspires.ftc.teamcode.Utils.Stopwatch;
+
+import java.util.ArrayList;
 
 public class DriveTrajectory extends Command {
     Drivetrain drivetrain;
@@ -32,7 +33,9 @@ public class DriveTrajectory extends Command {
     BasicPID angleController2 = new BasicPID(ControlConstants.AngularVelocityTeleop);
     AngleController angleControl = new AngleController(angleController);
     BasicPID distanceController = new BasicPID(ControlConstants.distanceControl);
-    ElapsedTime timer;
+    Stopwatch timer = new Stopwatch();
+
+    ArrayList<Pose2d> pastPoses = new ArrayList<Pose2d>();
 
     public DriveTrajectory(Drivetrain drivetrain, Odometry odometry, DirectTrajectory trajectory) {
         super(drivetrain, odometry);
@@ -40,7 +43,6 @@ public class DriveTrajectory extends Command {
         this.drivetrain = drivetrain;
         this.odometry = odometry;
         this.trajectory = trajectory;
-        this.timer = new ElapsedTime();
 
 //        this.turnController = new TurnOnlyControl(() -> odometry.getPosition().get(2), trajectory.targetPose(timer.seconds()).getHeading());
     }
@@ -53,6 +55,12 @@ public class DriveTrajectory extends Command {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void periodic() {
+        if (odometry.getPose().distanceBetween(trajectory.targetPose(timer.seconds())) > 6) {
+            timer.setPaused();
+        } else {
+            timer.setUnpaused();
+        }
+
         double sign = 1;
 
         double headingError = -MathUtils.normalizedHeadingError(
@@ -78,7 +86,7 @@ public class DriveTrajectory extends Command {
                 0,
                 odometry.getPose().distanceBetween(trajectory.targetPose(timer.seconds()))
         ) * sign;
-        forwardSpeed = Range.clip(forwardSpeed, -0.5, 0.5);
+//        forwardSpeed = Range.clip(forwardSpeed, -0.5, 0.5);
 
         double headingScale = Math.abs(Math.cos(headingError));
 
@@ -89,6 +97,8 @@ public class DriveTrajectory extends Command {
 //                forwardSpeed * headingScale + turnSpeeds.get(1)
 //        );
         drivetrain.robotRelative(forwardSpeed * headingScale, turnSpeed);
+
+        pastPoses.add(odometry.getPose());
         Dashboard.packet.put("Current Pose", odometry.getPose());
         Dashboard.packet.put("Target Pose", trajectory.targetPose(timer.seconds()));
         Dashboard.packet.put("Time", timer.seconds());
@@ -100,6 +110,8 @@ public class DriveTrajectory extends Command {
 
 
         drawRobotTarget(trajectory.targetPose(timer.seconds()), Dashboard.packet);
+        drawRobotTrajectory(trajectory.getPoses(), "Green", Dashboard.packet);
+        drawRobotTrajectory(pastPoses, "Red", Dashboard.packet);
 //        drivetrain.setPower(
 //                forwardSpeed * headingScale + turnSpeed,
 //                forwardSpeed * headingScale - turnSpeed

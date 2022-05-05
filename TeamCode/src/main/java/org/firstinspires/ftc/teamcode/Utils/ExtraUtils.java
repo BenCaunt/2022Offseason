@@ -106,6 +106,15 @@ public class ExtraUtils {
 
 	}
 
+	public static final int TRAJECTORY_RESOLUTION = 4;
+
+	public static void drawRobotTrajectory(ArrayList<Pose2d> poses, String color, TelemetryPacket packet) {
+		packet.fieldOverlay().setStroke(color);
+
+		for (int i = 0; i < poses.size() - TRAJECTORY_RESOLUTION; i += TRAJECTORY_RESOLUTION)
+			packet.fieldOverlay().strokeLine(poses.get(i).getX(), poses.get(i).getY(), poses.get(i + TRAJECTORY_RESOLUTION).getX(), poses.get(i + TRAJECTORY_RESOLUTION).getY());
+	}
+
 	public static DirectTrajectory parseTrajectory(String filename) {
 		ArrayList<Pose2d> poses = new ArrayList<Pose2d>();
 		ArrayList<Double> times = new ArrayList<Double>();
@@ -130,6 +139,10 @@ public class ExtraUtils {
 		} catch (Exception e) {
 			// nothing we can do lol
 		}
+
+		// For testing
+		poses.add(new Pose2d(-72, 0, new Rotation2d(0)));
+		times.add(times.get(times.size() - 1) + 4.0);
 
 		return new DirectTrajectory(poses, times);
 	}

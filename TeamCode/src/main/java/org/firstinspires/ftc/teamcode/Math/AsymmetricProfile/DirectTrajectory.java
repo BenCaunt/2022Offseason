@@ -53,4 +53,8 @@ public class DirectTrajectory {
 
         return nextPose;
     }
+
+    public ArrayList<Pose2d> getPoses() {
+        return points;
+    }
 }
