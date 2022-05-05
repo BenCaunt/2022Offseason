@@ -23,6 +23,7 @@ import org.firstinspires.ftc.teamcode.Utils.Stopwatch;
 
 import java.util.ArrayList;
 
+// TODO: Clean this all up, not very understandable right now
 public class DriveTrajectory extends Command {
     Drivetrain drivetrain;
     Odometry odometry;
@@ -33,7 +34,7 @@ public class DriveTrajectory extends Command {
     BasicPID angleController2 = new BasicPID(ControlConstants.AngularVelocityTeleop);
     AngleController angleControl = new AngleController(angleController);
     BasicPID distanceController = new BasicPID(ControlConstants.distanceControl);
-    Stopwatch timer = new Stopwatch();
+    Stopwatch stopwatch = new Stopwatch();
 
     ArrayList<Pose2d> pastPoses = new ArrayList<Pose2d>();
 
@@ -55,17 +56,17 @@ public class DriveTrajectory extends Command {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void periodic() {
-        if (odometry.getPose().distanceBetween(trajectory.targetPose(timer.seconds())) > 6) {
-            timer.setPaused();
+        if (odometry.getPose().distanceBetween(trajectory.targetPose(stopwatch.seconds())) > 6) {
+            stopwatch.setPaused();
         } else {
-            timer.setUnpaused();
+            stopwatch.setUnpaused();
         }
 
         double sign = 1;
 
         double headingError = -MathUtils.normalizedHeadingError(
 //                odometry.getPose().angleBetween(trajectory.nextPose(timer.seconds())),
-                odometry.getPose().angleBetween(trajectory.targetPose(timer.seconds() + 0.1)),
+                odometry.getPose().angleBetween(trajectory.targetPose(stopwatch.seconds() + 0.1)),
                 odometry.getPose().getHeading()
         );
 
@@ -74,7 +75,7 @@ public class DriveTrajectory extends Command {
         if (trajectoryFollowingSign(headingError) < 0) {
             headingError = -MathUtils.normalizedHeadingError(
 //                    odometry.getPose().rotate(Math.toRadians(180)).angleBetween(trajectory.nextPose(timer.seconds())),
-                    odometry.getPose().rotate(Math.toRadians(180)).angleBetween(trajectory.targetPose(timer.seconds() + 0.1)),
+                    odometry.getPose().rotate(Math.toRadians(180)).angleBetween(trajectory.targetPose(stopwatch.seconds() + 0.1)),
                     odometry.getPose().rotate(Math.toRadians(180)).getHeading()
             );
             sign = -1;
@@ -84,7 +85,7 @@ public class DriveTrajectory extends Command {
 
         double forwardSpeed = -distanceController.calculate(
                 0,
-                odometry.getPose().distanceBetween(trajectory.targetPose(timer.seconds()))
+                odometry.getPose().distanceBetween(trajectory.targetPose(stopwatch.seconds()))
         ) * sign;
 //        forwardSpeed = Range.clip(forwardSpeed, -0.5, 0.5);
 
@@ -100,16 +101,16 @@ public class DriveTrajectory extends Command {
 
         pastPoses.add(odometry.getPose());
         Dashboard.packet.put("Current Pose", odometry.getPose());
-        Dashboard.packet.put("Target Pose", trajectory.targetPose(timer.seconds()));
-        Dashboard.packet.put("Time", timer.seconds());
-        Dashboard.packet.put("Distance Between", odometry.getPose().distanceBetween(trajectory.targetPose(timer.seconds())));
-        Dashboard.packet.put("Angle Between", odometry.getPose().angleBetween(trajectory.nextPose(timer.seconds())));
+        Dashboard.packet.put("Target Pose", trajectory.targetPose(stopwatch.seconds()));
+        Dashboard.packet.put("Time", stopwatch.seconds());
+        Dashboard.packet.put("Distance Between", odometry.getPose().distanceBetween(trajectory.targetPose(stopwatch.seconds())));
+        Dashboard.packet.put("Angle Between", odometry.getPose().angleBetween(trajectory.nextPose(stopwatch.seconds())));
         Dashboard.packet.put("Heading Error", headingError);
         Dashboard.packet.put("Trajectory Sign", sign);
         Dashboard.packet.put("Current Heading", odometry.getPose().getHeading());
 
 
-        drawRobotTarget(trajectory.targetPose(timer.seconds()), Dashboard.packet);
+        drawRobotTarget(trajectory.targetPose(stopwatch.seconds()), Dashboard.packet);
         drawRobotTrajectory(trajectory.getPoses(), "Green", Dashboard.packet);
         drawRobotTrajectory(pastPoses, "Red", Dashboard.packet);
 //        drivetrain.setPower(
@@ -127,8 +128,8 @@ public class DriveTrajectory extends Command {
 
     @Override
     public boolean completed() {
-        return timer.seconds() > trajectory.endTime &&
-                odometry.getPose().distanceBetween(trajectory.targetPose(timer.seconds())) < 0.3;
+        return stopwatch.seconds() > trajectory.endTime &&
+                odometry.getPose().distanceBetween(trajectory.targetPose(stopwatch.seconds())) < 0.3;
     }
 
     @Override
