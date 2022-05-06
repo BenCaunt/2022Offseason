@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 @Autonomous
 public class TestAuto extends BaseAuto {
-	DirectTrajectory trajectory = ExtraUtils.parseTrajectory("path3");
+	DirectTrajectory trajectory = ExtraUtils.parseTrajectory("path4");
 
 	@RequiresApi(api = Build.VERSION_CODES.N)
 	@Override

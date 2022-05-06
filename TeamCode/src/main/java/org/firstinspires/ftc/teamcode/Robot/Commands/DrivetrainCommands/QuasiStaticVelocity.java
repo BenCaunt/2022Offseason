@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Robot.Commands.DrivetrainCommands;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.teamcode.CommandFramework.Command;
@@ -33,16 +34,16 @@ public class QuasiStaticVelocity extends Command {
 
     @Override
     public void periodic() {
-        double leftVoltage = drivetrain.getLeftVoltage();
+        double leftPower = Range.clip(drivetrain.getLeftPower(), 0.00, 1);
         double leftVelocity = Odometry.encoderTicksToInches(odometry.leftEncoder.getVelocity());
 
-        double rightVoltage = drivetrain.getRightVoltage();
+        double rightPower = Range.clip(drivetrain.getRightPower(), 0.00, 1);
         double rightVelocity = Odometry.encoderTicksToInches(odometry.rightEncoder.getVelocity());
 
-        RobotLog.ii("SysID (V/v)", "(" + leftVoltage + "," + leftVelocity + "),(" + rightVoltage + "," + rightVelocity + ")");
+        RobotLog.ii("SysID (P/V)", "(" + leftPower + "," + leftVelocity + "),(" + rightPower + "," + rightVelocity + ")");
 
-        double newVoltage = timer.seconds() * rampRate / 12;
-        drivetrain.setPower(newVoltage, newVoltage);
+        double newPower = timer.seconds() * rampRate / 12;
+        drivetrain.setPower(newPower, newPower);
     }
 
     @Override

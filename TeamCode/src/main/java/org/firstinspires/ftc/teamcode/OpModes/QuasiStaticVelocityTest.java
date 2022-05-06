@@ -26,7 +26,7 @@ public class QuasiStaticVelocityTest extends BaseAuto {
     public Command setupAuto(CommandScheduler scheduler) {
         robot.odometry.setEstimate(new Vector(new double[]{0, 0, 0}));
 
-        QuasiStaticVelocity quasiStaticTest = new QuasiStaticVelocity(robot.drivetrain, robot.odometry, 0.25, 10);
+        QuasiStaticVelocity quasiStaticTest = new QuasiStaticVelocity(robot.drivetrain, robot.odometry, 0.25, 30);
 
         return quasiStaticTest;
     }
