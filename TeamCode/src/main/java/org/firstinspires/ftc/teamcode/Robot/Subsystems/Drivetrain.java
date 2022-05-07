@@ -122,14 +122,6 @@ public class Drivetrain extends Subsystem {
 		setPower(left,right);
 	}
 
-	public double getLeftVoltage() {
-		return hwMap.voltageSensor.get("FrontLeft").getVoltage();
-	}
-
-	public double getRightVoltage() {
-		return hwMap.voltageSensor.get("FrontRight").getVoltage();
-	}
-
 	@Override
 	public void shutdown() {
 		setPower(0,0);

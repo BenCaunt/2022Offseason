@@ -10,7 +10,7 @@ fname = parser.parse_args().pathname
 dataFile = open(f'{fname}.wpilib.json')
 data = json.load(dataFile)
 
-csvOut = open(f'{fname}.csv', 'a')
+csvOut = open(f'{fname}.csv', 'w')
 csvOut.write('time,x,y\n')
 
 for datum in data:
@@ -22,4 +22,4 @@ for datum in data:
 
 csvOut.close()
 
-os.system(f'adb push {fname}.csv /sdcard/FIRST')
+os.system(f'adb -s 192.168.43.1:5555 push {fname}.csv /sdcard/FIRST')
