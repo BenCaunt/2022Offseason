@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Simulation.TestCommandsSubsystems.PrintSub
 
 public class Robot {
 
-	public final static boolean IS_NEW_6wd = true;
+	public final static boolean IS_NEW_6wd = false;
 
 	public enum OpMode {
 		Auto,
