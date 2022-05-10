@@ -15,13 +15,9 @@ public class MotorModelController {
     }
 
     public double calculate(double reference, double state, double maxAccel) {
-        if (reference < state) {
-            return 0;
-        }
+        double accel = Range.clip(reference - state, -maxAccel, maxAccel);
+        double power = kV * state + kA * accel + kS;
 
-        double accel = Range.clip(reference - state, 0, maxAccel);
-        double voltage = kV * state + kA * accel + kS;
-
-        return voltage / 12;
+        return power;
     }
 }
