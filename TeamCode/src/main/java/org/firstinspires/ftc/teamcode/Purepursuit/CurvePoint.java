@@ -30,7 +30,7 @@ public class CurvePoint {
     public CurvePoint(double x, double y) {
         this.x = x;
         this.y = y;
-        this.moveSpeed = 1;
+        this.moveSpeed = 0.4;
         this.followDistance = DEFAULT_FOLLOW_DIST;
         this.pointLength = 0;
         this.slowDownTurnRadians = 0;
@@ -52,5 +52,12 @@ public class CurvePoint {
     public void setPoint(Point intersection) {
         this.x = intersection.x;
         this.y = intersection.y;
+    }
+
+    public boolean equals(CurvePoint other) {
+        return this.x == other.x && this.y == other.y;
+    }
+    public boolean equals(Point other) {
+        return this.x == other.x && this.y == other.y;
     }
 }
