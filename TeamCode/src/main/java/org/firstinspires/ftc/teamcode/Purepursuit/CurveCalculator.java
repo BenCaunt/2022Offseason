@@ -21,7 +21,9 @@ import java.util.ArrayList;
 public class CurveCalculator {
     public  CurvePoint previousIntersection = new CurvePoint(0,0);
     protected boolean endIsTarget = false;
-    SqrtControl angleController = new SqrtControl(ControlConstants.angleControl2);
+    protected boolean isDone = false;
+    protected double isDoneDistance = 1.1;
+    SqrtControl angleController = new SqrtControl(ControlConstants.angleControl3);
     AngleController angleControl = new AngleController(angleController);
     BasicPID distanceController = new BasicPID(ControlConstants.distanceControl);
 
@@ -41,7 +43,7 @@ public class CurveCalculator {
         // otherwise we cannot guarantee which direction the robot is going in.
         // we can guarantee that pure pursuit will be stable up until
         // the end without this because of the constant non zero following distance.
-        if (endIsTarget) {
+        if (true) {
             if (trajectoryFollowingSign(headingError) < 0) {
                 headingError = -MathUtils.normalizedHeadingError(
                         angle,
@@ -59,14 +61,14 @@ public class CurveCalculator {
         ) * sign;
 
 
-        double headingScale = Math.abs(Math.cos(headingError));
+        double headingScale = Math.abs(Math.cos(clip(headingError, -Math.PI/2, Math.PI/2)));
 
         forwardSpeed = clip(forwardSpeed,-1,1);
         turnSpeed = clip(turnSpeed,-1,1);
 
         return new double[] {
-                forwardSpeed * target.moveSpeed,
-                turnSpeed * headingScale * target.moveSpeed
+                forwardSpeed * target.moveSpeed * headingScale,
+                turnSpeed * target.moveSpeed
         };
 
     }
@@ -117,6 +119,7 @@ public class CurveCalculator {
                 if (deltaAngle < closestAngle) {
                     closestAngle = deltaAngle;
                     followMe.setPoint(intersection);
+                    followMe.moveSpeed = endLine.moveSpeed;;
                     indexAtLastIntersectionUpdate = i;
                 }
                 allIntersections.add(intersection);
@@ -129,6 +132,11 @@ public class CurveCalculator {
             followMe = pathPoints.get(pathPoints.size() - 1);
         }
         endIsTarget = followMe.equals(pathPoints.get(pathPoints.size()-1));
+        if (endIsTarget &&
+                robotPose.distanceBetween(new Pose2d(followMe.x,followMe.y,new Rotation2d(0)))
+                        < isDoneDistance) {
+            isDone = true;
+        }
         previousIntersection = new CurvePoint(followMe);
         return followMe;
 
@@ -140,4 +148,7 @@ public class CurveCalculator {
         return 1;
     }
 
+    public boolean isDone() {
+        return isDone;
+    }
 }

@@ -37,7 +37,7 @@ public class DrivePurePursuit extends Command {
 
     @Override
     public boolean completed() {
-        return false;
+        return PurePursuit.isDone();
     }
 
     @Override

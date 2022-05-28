@@ -16,6 +16,8 @@ import org.firstinspires.ftc.teamcode.Robot.Subsystems.Robot;
 
 import java.util.function.DoubleSupplier;
 
+import static org.firstinspires.ftc.teamcode.Robot.Subsystems.Robot.IS_NEW_6wd;
+
 public class TurnOnlyControl {
 
 	protected double headingReference;
@@ -40,7 +42,7 @@ public class TurnOnlyControl {
 	public TurnOnlyControl(DoubleSupplier robotAngle, double headingReference) {
 		this.robotAngle = robotAngle;
 		this.headingReference = headingReference;
-		if (Robot.IS_NEW_6wd) {
+		if (IS_NEW_6wd) {
 			angleController = new SqrtControl(ControlConstants.angleControl2);
 		} else {
 			angleController = new SqrtControl(ControlConstants.angleControl);
@@ -48,6 +50,20 @@ public class TurnOnlyControl {
 		angleControl = new AngleController(angleController);
 	}
 
+	public TurnOnlyControl(DoubleSupplier robotAngle, double headingReference, boolean forDriving) {
+		this.robotAngle = robotAngle;
+		this.headingReference = headingReference;
+		if (IS_NEW_6wd) {
+			if (forDriving) {
+				angleController = new SqrtControl(ControlConstants.angleControl3);
+			} else {
+				angleController = new SqrtControl(ControlConstants.angleControl2);
+			}
+		} else {
+			angleController = new SqrtControl(ControlConstants.angleControl);
+		}
+		angleControl = new AngleController(angleController);
+	}
 	/**
 	 * returns the wheel powers as a vector
 	 * @return 2 state vector, item 0 is left, item 1 is right

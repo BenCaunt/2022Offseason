@@ -27,10 +27,29 @@ public class CurvePoint {
         this.slowDownTurnAmount = slowDownTurnAmount;
     }
 
+
+    public CurvePoint(double x, double y, double moveSpeed) {
+        this.x = x;
+        this.y = y;
+        this.moveSpeed = moveSpeed;
+        this.followDistance = DEFAULT_FOLLOW_DIST;
+        this.pointLength = 0;
+        this.slowDownTurnRadians = 0;
+        this.slowDownTurnAmount = 0;
+    }
+    public CurvePoint(double x, double y, double moveSpeed, double followDistance) {
+        this.x = x;
+        this.y = y;
+        this.moveSpeed = moveSpeed;
+        this.followDistance = followDistance;
+        this.pointLength = 0;
+        this.slowDownTurnRadians = 0;
+        this.slowDownTurnAmount = 0;
+    }
     public CurvePoint(double x, double y) {
         this.x = x;
         this.y = y;
-        this.moveSpeed = 0.4;
+        this.moveSpeed = 1;
         this.followDistance = DEFAULT_FOLLOW_DIST;
         this.pointLength = 0;
         this.slowDownTurnRadians = 0;
