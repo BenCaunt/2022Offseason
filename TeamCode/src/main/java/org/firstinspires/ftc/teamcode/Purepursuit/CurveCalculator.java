@@ -25,7 +25,7 @@ public class CurveCalculator {
     protected double isDoneDistance = 1.1;
     SqrtControl angleController = new SqrtControl(ControlConstants.angleControl3);
     AngleController angleControl = new AngleController(angleController);
-    BasicPID distanceController = new BasicPID(ControlConstants.distanceControl);
+    BasicPID distanceController = new BasicPID(ControlConstants.distanceControlPP);
 
     public double[] getDriveSignal(ArrayList<CurvePoint> allPoints, Pose2d robotPose) {
         double sign = 1;
@@ -38,21 +38,14 @@ public class CurveCalculator {
                 angle,
                 robotPose.getHeading()
         );
-
-        // we only want to have the potential to go backwards if we are at the end so we can stabilize on that pose.
-        // otherwise we cannot guarantee which direction the robot is going in.
-        // we can guarantee that pure pursuit will be stable up until
-        // the end without this because of the constant non zero following distance.
-        if (true) {
-            if (trajectoryFollowingSign(headingError) < 0) {
-                headingError = -MathUtils.normalizedHeadingError(
-                        angle,
-                        robotPose.getHeading()
-                );
-                sign = -1;
-            }
-
+        if (trajectoryFollowingSign(headingError) < 0) {
+            headingError = -MathUtils.normalizedHeadingError(
+                    angle,
+                    robotPose.getHeading()
+            );
+            sign = -1;
         }
+
         double turnSpeed = angleControl.calculate(0, headingError);
 
         double forwardSpeed = -distanceController.calculate(
@@ -68,7 +61,7 @@ public class CurveCalculator {
 
         return new double[] {
                 forwardSpeed * target.moveSpeed * headingScale,
-                turnSpeed * target.moveSpeed
+                turnSpeed
         };
 
     }
