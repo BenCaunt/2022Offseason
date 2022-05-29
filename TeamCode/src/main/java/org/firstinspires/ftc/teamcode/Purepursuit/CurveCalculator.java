@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Math.Controllers.SqrtControl;
 import org.firstinspires.ftc.teamcode.Math.Geometry.Pose2d;
 import org.firstinspires.ftc.teamcode.Math.Geometry.Rotation2d;
+import org.firstinspires.ftc.teamcode.Math.Geometry.Vector2d;
 import org.firstinspires.ftc.teamcode.Robot.ControlConstants;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.Dashboard;
 
@@ -38,6 +39,11 @@ public class CurveCalculator {
                 angle,
                 robotPose.getHeading()
         );
+
+        // we only want to have the potential to go backwards if we are at the end so we can stabilize on that pose.
+        // otherwise we cannot guarantee which direction the robot is going in.
+        // we can guarantee that pure pursuit will be stable up until
+        // the end without this because of the constant non zero following distance.
         if (trajectoryFollowingSign(headingError) < 0) {
             headingError = -MathUtils.normalizedHeadingError(
                     angle,
@@ -45,6 +51,7 @@ public class CurveCalculator {
             );
             sign = -1;
         }
+
 
         double turnSpeed = angleControl.calculate(0, headingError);
 
@@ -66,6 +73,42 @@ public class CurveCalculator {
 
     }
 
+    public double[] getDriveSignalMec(ArrayList<CurvePoint> allPoints, Pose2d robotPose) {
+
+        CurvePoint target = calculateFollowingPoint(allPoints, robotPose);
+        Pose2d targetPose = new Pose2d(target.x,target.y,new Rotation2d(0));
+        double angle = robotPose.angleBetween(targetPose);
+        double headingError = -MathUtils.normalizedHeadingError(
+                angle,
+                robotPose.getHeading()
+        );
+
+        double kp = 0.05;
+
+        double xDelta = targetPose.getX() - robotPose.getX();
+        xDelta *= kp;
+
+        double yDelta = targetPose.getY() - robotPose.getY();
+        yDelta *= kp;
+
+        Vector2d vec = new Vector2d(xDelta,yDelta);
+        vec = vec.rotateBy(Math.toDegrees(robotPose.getHeading()));
+
+
+
+        double turnSpeed = angleControl.calculate(0, headingError);
+        double headingScale = Math.abs(Math.cos(clip(headingError, -Math.PI/2, Math.PI/2)));
+
+        turnSpeed = clip(turnSpeed,-1,1);
+
+        return new double[] {
+                vec.getX() * target.moveSpeed * headingScale,
+                vec.getY() * target.moveSpeed * headingScale,
+                turnSpeed
+        };
+
+    }
+
     public CurvePoint calculateFollowingPoint(ArrayList<CurvePoint> allPoints, Pose2d robotPose) {
         for (int i = 0; i < allPoints.size()-1; ++i) {
             Dashboard.packet.fieldOverlay()
@@ -73,7 +116,7 @@ public class CurveCalculator {
                             allPoints.get(i + 1).x,allPoints.get(i + 1).y);
         }
 
-        CurvePoint followMe = getFollowPointPath(allPoints,robotPose,allPoints.get(0).followDistance);
+        CurvePoint followMe = getFollowPointPath(allPoints,robotPose);
 
         Dashboard.packet.fieldOverlay()
                 .setStroke("Orange")
@@ -90,7 +133,7 @@ public class CurveCalculator {
     }
 
 
-    protected CurvePoint getFollowPointPath(ArrayList<CurvePoint> pathPoints, Pose2d robotPose, double followRadius) {
+    protected CurvePoint getFollowPointPath(ArrayList<CurvePoint> pathPoints, Pose2d robotPose) {
         CurvePoint followMe = new CurvePoint(previousIntersection);
         ArrayList<Point> allIntersections = new ArrayList<>();
         int indexAtLastIntersectionUpdate = 0;
@@ -99,7 +142,7 @@ public class CurveCalculator {
             CurvePoint startLine = pathPoints.get(i);
             CurvePoint endLine = pathPoints.get(i + 1);
 
-            ArrayList<Point> intersections = lineCircleIntersection(robotPose.getX(), robotPose.getY(), followRadius, startLine.x, startLine.y, endLine.x, endLine.y);
+            ArrayList<Point> intersections = lineCircleIntersection(robotPose.getX(), robotPose.getY(), endLine.followDistance, startLine.x, startLine.y, endLine.x, endLine.y);
 
             double closestAngle = 1000000;
 
