@@ -21,16 +21,16 @@ public class PurePursuitTest extends BaseAuto {
     @Override
     public Command setupAuto(CommandScheduler scheduler) {
         ArrayList<CurvePoint> points1 = new ArrayList<>();
-        points1.add(new CurvePoint(0,0));
-        points1.add(new CurvePoint(10,10,0.5,20));
-        points1.add(new CurvePoint(20,30,1,20));
-        points1.add(new CurvePoint(40,30,1,20));
-        points1.add(new CurvePoint(40,60,0.5,8));
+        points1.add(new CurvePoint(0,0,0));
+        points1.add(new CurvePoint(10,10,0.5,10));
+        points1.add(new CurvePoint(20,30,1,10));
+        points1.add(new CurvePoint(40,30,1,10));
+        points1.add(new CurvePoint(40,60,0.3,8));
 
 
         ArrayList<CurvePoint> points2 = new ArrayList<>();
-        points2.add(new CurvePoint(40,60,1,20));
-        points2.add(new CurvePoint(40,10,1,20));
+        points2.add(new CurvePoint(40,60,0.2,10));
+        points2.add(new CurvePoint(40,10,1,10));
         points2.add(new CurvePoint(0,0,0.5,10));
 
         Command auto = new DrivePurePursuit(robot,points1)

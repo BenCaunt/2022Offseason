@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.Purepursuit;
 
+import org.firstinspires.ftc.teamcode.Math.Geometry.Pose2d;
+import org.firstinspires.ftc.teamcode.Math.Geometry.Rotation2d;
+
 /**
  * point in our pure pursuit curve that we will actively move toward
  */
@@ -78,5 +81,11 @@ public class CurvePoint {
     }
     public boolean equals(Point other) {
         return this.x == other.x && this.y == other.y;
+    }
+
+    public double distanceTo(CurvePoint other) {
+        Pose2d thisPose = new Pose2d(this.x,this.y,new Rotation2d(0));
+        Pose2d otherPose = new Pose2d(other.x,other.y,new Rotation2d(0));
+        return thisPose.distanceBetween(otherPose);
     }
 }

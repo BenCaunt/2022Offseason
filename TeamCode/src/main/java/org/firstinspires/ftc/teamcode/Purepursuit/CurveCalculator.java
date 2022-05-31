@@ -142,7 +142,7 @@ public class CurveCalculator {
             CurvePoint startLine = pathPoints.get(i);
             CurvePoint endLine = pathPoints.get(i + 1);
 
-            ArrayList<Point> intersections = lineCircleIntersection(robotPose.getX(), robotPose.getY(), endLine.followDistance, startLine.x, startLine.y, endLine.x, endLine.y);
+            ArrayList<Point> intersections = lineCircleIntersection(robotPose.getX(), robotPose.getY(), startLine.followDistance, startLine.x, startLine.y, endLine.x, endLine.y);
 
             double closestAngle = 1000000;
 
@@ -155,7 +155,15 @@ public class CurveCalculator {
                 if (deltaAngle < closestAngle) {
                     closestAngle = deltaAngle;
                     followMe.setPoint(intersection);
-                    followMe.moveSpeed = endLine.moveSpeed;;
+
+                    // interpolate the move speed between the points
+                    double moveSpeedDiff = endLine.moveSpeed - startLine.moveSpeed;
+                    double totalDist = startLine.distanceTo(endLine);
+                    double intersectionDist = followMe.distanceTo(startLine);
+                    double percent = intersectionDist / totalDist;
+                    double moveSpeedInterpolation = moveSpeedDiff * percent;
+
+                    followMe.moveSpeed = startLine.moveSpeed + moveSpeedInterpolation;
                     indexAtLastIntersectionUpdate = i;
                 }
                 allIntersections.add(intersection);
