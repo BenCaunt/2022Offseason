@@ -35,6 +35,11 @@ public class Odometry extends Subsystem {
 
 	KalmanFilter kf;
 	LowPassFilter lowPassFilter;
+
+	double leftVelocity = 0;
+	double rightVelocity = 0;
+	double leftDelta = 0;
+	double rightDelta = 0;
 	@Override
 	public void initAuto(HardwareMap hwMap) {
 		imu = hwMap.get(BNO055IMU.class, "imu");
@@ -58,12 +63,12 @@ public class Odometry extends Subsystem {
 	public void periodic() {
 		double left = encoderTicksToInches(leftEncoder.getCurrentPosition());
 		double right = encoderTicksToInches(rightEncoder.getCurrentPosition());
-		double leftVelocity = encoderTicksToInches(leftEncoder.getVelocity());
-		double rightVelocity = encoderTicksToInches(rightEncoder.getVelocity());
+		leftVelocity = encoderTicksToInches(leftEncoder.getVelocity());
+		rightVelocity = encoderTicksToInches(rightEncoder.getVelocity());
 		velocityX = (leftVelocity + rightVelocity) / 2;
 
-		double leftDelta = left - leftPrev;
-		double rightDelta = right - rightPrev;
+		leftDelta = left - leftPrev;
+		rightDelta = right - rightPrev;
 		leftPrev = left;
 		rightPrev = right;
 		double xDelta = (leftDelta + rightDelta) / 2;
@@ -146,5 +151,21 @@ public class Odometry extends Subsystem {
 				0,
 				velocityTheta
 		});
+	}
+
+	public double getLeftVelocity() {
+		return leftVelocity;
+	}
+
+	public double getRightVelocity() {
+		return rightVelocity;
+	}
+
+	public double getLeftDelta() {
+		return leftDelta;
+	}
+
+	public double getRightDelta() {
+		return rightDelta;
 	}
 }

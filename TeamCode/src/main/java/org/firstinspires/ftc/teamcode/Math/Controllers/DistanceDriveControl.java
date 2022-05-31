@@ -30,7 +30,7 @@ public class DistanceDriveControl {
 	boolean hasRun = false;
 
 	public DistanceDriveControl(DoubleSupplier robotAngle, double headingReference) {
-		turnControl = new TurnOnlyControl(robotAngle, headingReference);
+		turnControl = new TurnOnlyControl(robotAngle, headingReference,true);
 	}
 
 	/**
