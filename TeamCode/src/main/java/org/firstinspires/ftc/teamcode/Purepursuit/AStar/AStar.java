@@ -1,28 +1,35 @@
 package org.firstinspires.ftc.teamcode.Purepursuit.AStar;
 
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import org.firstinspires.ftc.teamcode.Purepursuit.CurvePoint;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.PriorityQueue;
 
 import static java.util.Collections.reverse;
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class AStar {
 
 
-
+	final int REASONABLE_INFINITY = 10000;
 
 	final int FIELD_SIZE = 144;
 	CurvePoint goal;
 	CurvePoint initial;
-	PriorityQueue<CurvePoint> openSet = new PriorityQueue<>();
 	HashMap<CurvePoint, CurvePoint> cameFrom = new HashMap<>();
 	HashMap<CurvePoint, Double> gScore = new HashMap<>();
 	HashMap<CurvePoint, Double> fScore = new HashMap<>();
+	PriorityQueue<CurvePoint> openSet = new PriorityQueue<>((point, t1) -> -Double.compare(getFScore(t1), getFScore(point)));
+
 	public CurvePoint[][] field;
 
 	public AStar(CurvePoint goal, CurvePoint initial) {
@@ -59,7 +66,9 @@ public class AStar {
 			int newX = indexX + direction[0] ;
 			int newY = indexY + direction[1] ;
 			if (!(newX < 0 || newX > FIELD_SIZE  || newY < 0 || newY > FIELD_SIZE) ) {
-				neighbors.add(new CurvePoint(field[newX][newY]));
+				if (!field[newX][newY].isObstacle()) {
+					neighbors.add(new CurvePoint(field[newX][newY]));
+				}
 			}
 		}
 		return neighbors;
@@ -78,11 +87,44 @@ public class AStar {
 		return n.distanceTo(goal);
 	}
 
-	protected void computeAStar() {
+	public ArrayList<CurvePoint> computeAStar() {
 		gScore.put(initial,0.0);
 		fScore.put(initial, H(initial));
+		openSet.add(initial);
 
 
+		while (!openSet.isEmpty()) {
+
+			CurvePoint current = openSet.peek();
+			System.out.println("OpenSet Size "  + openSet.size());
+			assert current != null;
+			openSet.remove(current);
+
+			if (current.equals(goal)) {
+				System.out.println(cameFrom);
+				return reconstructPath(cameFrom, current);
+			}
+
+
+			ArrayList<CurvePoint> neighbors = getNeighbors(current);
+
+			System.out.println(neighbors.size());
+
+			for (CurvePoint neighbor: neighbors) {
+				double tentative_gScore = getGScore(current) + current.distanceTo(neighbor);
+				if (tentative_gScore < getGScore(neighbor)) {
+					cameFrom.put(neighbor,current);
+					gScore.put(neighbor, tentative_gScore);
+					fScore.put(neighbor, tentative_gScore + H(neighbor));
+					if (!openSet.contains(neighbor)) {
+						openSet.add(neighbor);
+					}
+				}
+			}
+
+		}
+
+		return null;
 
 	}
 
@@ -90,17 +132,17 @@ public class AStar {
 		if (gScore.containsKey(c)) {
 			return Objects.requireNonNull(gScore.get(c));
 		}
-		return Double.POSITIVE_INFINITY;
+		return REASONABLE_INFINITY;
 	}
 
 	protected double getFScore(CurvePoint c){
 		if (fScore.containsKey(c)) {
 			return Objects.requireNonNull(fScore.get(c));
 		}
-		return Double.POSITIVE_INFINITY;
+		return REASONABLE_INFINITY;
 	}
 
-	protected ArrayList<CurvePoint> cameFrom(HashMap<CurvePoint, CurvePoint> cameFrom, CurvePoint current) {
+	protected ArrayList<CurvePoint> reconstructPath(HashMap<CurvePoint, CurvePoint> cameFrom, CurvePoint current) {
 		ArrayList<CurvePoint> reversedPath = new ArrayList<>();
 		reversedPath.add(current);
 		CurvePoint c = new CurvePoint(current);
@@ -109,7 +151,7 @@ public class AStar {
 			reversedPath.add(c);
 		}
 		// now the path is the correct direction
-		reverse(reversedPath);
+		//reverse(reversedPath);
 		return reversedPath;
 	}
 }

@@ -15,6 +15,7 @@ public class CurvePoint {
     public double moveSpeed;
     public double followDistance;
     protected boolean isObstacle = false;
+    public boolean visited = false;
 
     public final double DEFAULT_FOLLOW_DIST = 5;
 
@@ -47,6 +48,7 @@ public class CurvePoint {
         this.moveSpeed = thisPoint.moveSpeed;
         this.followDistance = thisPoint.followDistance;
         this.setObstacle(thisPoint.isObstacle());
+        this.visited = thisPoint.visited;
     }
 
 
@@ -80,5 +82,11 @@ public class CurvePoint {
     @Override
     public String toString() {
         return "x: " + this.x + " y: " + this.y;
+    }
+
+
+    @Override
+    public int hashCode() {
+        return (int)x + (int)Math.pow(y,2);
     }
 }
