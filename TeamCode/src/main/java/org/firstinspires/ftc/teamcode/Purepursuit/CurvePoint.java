@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Purepursuit;
 
+import androidx.annotation.NonNull;
+
 import org.firstinspires.ftc.teamcode.Math.Geometry.Pose2d;
 import org.firstinspires.ftc.teamcode.Math.Geometry.Rotation2d;
 
@@ -12,6 +14,7 @@ public class CurvePoint {
     public double y;
     public double moveSpeed;
     public double followDistance;
+    protected boolean isObstacle = false;
 
     public final double DEFAULT_FOLLOW_DIST = 5;
 
@@ -43,6 +46,7 @@ public class CurvePoint {
         this.y = thisPoint.y;
         this.moveSpeed = thisPoint.moveSpeed;
         this.followDistance = thisPoint.followDistance;
+        this.setObstacle(thisPoint.isObstacle());
     }
 
 
@@ -62,5 +66,19 @@ public class CurvePoint {
         Pose2d thisPose = new Pose2d(this.x,this.y,new Rotation2d(0));
         Pose2d otherPose = new Pose2d(other.x,other.y,new Rotation2d(0));
         return thisPose.distanceBetween(otherPose);
+    }
+
+    public void setObstacle(boolean obstacle) {
+        isObstacle = obstacle;
+    }
+
+    public boolean isObstacle() {
+        return isObstacle;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "x: " + this.x + " y: " + this.y;
     }
 }
