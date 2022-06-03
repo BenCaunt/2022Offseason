@@ -96,12 +96,10 @@ public class AStar {
 		while (!openSet.isEmpty()) {
 
 			CurvePoint current = openSet.peek();
-			System.out.println("OpenSet Size "  + openSet.size());
 			assert current != null;
 			openSet.remove(current);
 
 			if (current.equals(goal)) {
-				System.out.println(cameFrom);
 				return reconstructPath(cameFrom, current);
 			}
 

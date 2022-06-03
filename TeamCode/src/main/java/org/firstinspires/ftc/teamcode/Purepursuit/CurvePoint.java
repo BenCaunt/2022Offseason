@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Purepursuit;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.firstinspires.ftc.teamcode.Math.Geometry.Pose2d;
 import org.firstinspires.ftc.teamcode.Math.Geometry.Rotation2d;
@@ -57,9 +58,23 @@ public class CurvePoint {
         this.y = intersection.y;
     }
 
-    public boolean equals(CurvePoint other) {
-        return this.x == other.x && this.y == other.y;
+
+//    @Override
+//    public boolean equals(CurvePoint other) {
+//        return this.x == other.x && this.y == other.y;
+//    }
+
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+
+        if (obj == this) return true;
+        if (!(obj instanceof CurvePoint)) return false;
+        CurvePoint that = (CurvePoint) obj;
+
+        return this.x == that.x && this.y == that.y;
     }
+
     public boolean equals(Point other) {
         return this.x == other.x && this.y == other.y;
     }
