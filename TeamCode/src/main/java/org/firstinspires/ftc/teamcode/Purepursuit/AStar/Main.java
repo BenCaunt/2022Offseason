@@ -15,7 +15,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		AStar astar = new AStar(new CurvePoint(30,30), new CurvePoint(0,0));
-		ArrayList<CurvePoint> neighbors = astar.getNeighbors(new CurvePoint(72,0));
+		astar.addCircleObstacle(12,12,5);
 		ArrayList<CurvePoint> path = astar.computeAStar();
 		if (path.isEmpty()) return;
 		for (CurvePoint n: path) {

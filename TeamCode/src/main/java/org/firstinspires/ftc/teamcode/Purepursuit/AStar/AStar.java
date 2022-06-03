@@ -110,7 +110,7 @@ public class AStar {
 
 			for (CurvePoint neighbor: neighbors) {
 				double tentative_gScore = getGScore(current) + current.distanceTo(neighbor);
-				if (tentative_gScore < getGScore(neighbor)) {
+				if (tentative_gScore < getGScore(neighbor) && !neighbor.isObstacle()) {
 					cameFrom.put(neighbor,current);
 					gScore.put(neighbor, tentative_gScore);
 					fScore.put(neighbor, tentative_gScore + H(neighbor));
@@ -140,6 +140,17 @@ public class AStar {
 		return REASONABLE_INFINITY;
 	}
 
+	public void addCircleObstacle(double x, double y, double radius) {
+		CurvePoint circleOrigin = new CurvePoint(x,y);
+		for (CurvePoint[] row: field) {
+			for (CurvePoint point:row) {
+				if (point.distanceTo(circleOrigin) < radius) {
+					point.setObstacle(true);
+				}
+			}
+		}
+	}
+
 	protected ArrayList<CurvePoint> reconstructPath(HashMap<CurvePoint, CurvePoint> cameFrom, CurvePoint current) {
 		ArrayList<CurvePoint> reversedPath = new ArrayList<>();
 		reversedPath.add(current);
@@ -149,7 +160,7 @@ public class AStar {
 			reversedPath.add(c);
 		}
 		// now the path is the correct direction
-		//reverse(reversedPath);
+		reverse(reversedPath);
 		return reversedPath;
 	}
 }
