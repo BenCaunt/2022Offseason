@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.Math.AsymmetricProfile.DirectTrajectory;
 import org.firstinspires.ftc.teamcode.Math.Geometry.Pose2d;
 import org.firstinspires.ftc.teamcode.Math.Geometry.Rotation2d;
 import org.firstinspires.ftc.teamcode.Math.Geometry.Vector2d;
+import org.firstinspires.ftc.teamcode.Purepursuit.AStar.Circle;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -46,6 +47,10 @@ public class ExtraUtils {
 		return Math.atan2(v.get(1), v.get(0));
 	}
 
+
+	public static void drawCircle(Circle circle, TelemetryPacket packet) {
+		packet.fieldOverlay().fillCircle(circle.x, circle.y,circle.radius);
+	}
 
 	public static final double FIELD_SCALE_FACTOR = 1;
 

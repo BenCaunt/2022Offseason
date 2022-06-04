@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.PriorityQueue;
 
+import static java.util.Collections.max;
 import static java.util.Collections.reverse;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -29,6 +30,8 @@ public class AStar {
 	HashMap<CurvePoint, Double> gScore = new HashMap<>();
 	HashMap<CurvePoint, Double> fScore = new HashMap<>();
 	PriorityQueue<CurvePoint> openSet = new PriorityQueue<>((point, t1) -> -Double.compare(getFScore(t1), getFScore(point)));
+
+	public ArrayList<Circle> obstacles = new ArrayList<>();
 
 	public CurvePoint[][] field;
 
@@ -84,7 +87,8 @@ public class AStar {
 	 * @return weight of n relative to the goal
 	 */
 	public double H(CurvePoint n) {
-		return n.distanceTo(goal);
+		//return n.distanceTo(goal);
+		return Math.abs(n.x - goal.x) + Math.abs(n.y - goal.y);
 	}
 
 	public ArrayList<CurvePoint> computeAStar() {
@@ -149,6 +153,7 @@ public class AStar {
 				}
 			}
 		}
+		obstacles.add(new Circle(x,y,radius));
 	}
 
 	protected ArrayList<CurvePoint> reconstructPath(HashMap<CurvePoint, CurvePoint> cameFrom, CurvePoint current) {
@@ -162,5 +167,57 @@ public class AStar {
 		// now the path is the correct direction
 		reverse(reversedPath);
 		return reversedPath;
+	}
+
+	/**
+	 * in place on arraylist of curve points will make the list followble by the controller
+	 * @param path array list of curve points
+	 */
+	public void makePathStable(ArrayList<CurvePoint> path) {
+
+		int slowDistance = 20;
+
+		double slowestSpeed = 0.4;
+		double maxSpeed = 1;
+
+
+		// leaving a gap before the last point allows for better stability
+		// this is the number of points we take out before the end to accomplish this
+		int num_to_remove = 8;
+
+		ArrayList<CurvePoint> pointsToRemove = new ArrayList<>();
+		if (path.size() > num_to_remove + 2) {
+			for (int i = path.size() - 1 - num_to_remove; i < path.size() - 1; ++i) {
+				pointsToRemove.add(path.get(i));
+			}
+			for (CurvePoint point : pointsToRemove) {
+				path.remove(point);
+			}
+		}
+
+		// if the length of the path is less than 2 n different units, just make the whole thing at a low power
+		if (path.size() < slowDistance * 2) {
+			for (CurvePoint point: path) {
+				point.moveSpeed = slowestSpeed;
+			}
+			return;
+		}
+
+		double ramp_diff = maxSpeed - slowestSpeed;
+		double delta = ramp_diff / slowDistance;
+		// ramp up the first n units
+		for (int i = 0; i < slowDistance; ++i) {
+			path.get(i).moveSpeed = slowestSpeed + delta * i;
+		}
+
+		// ramp down the last n units
+		for (int i = path.size() - slowDistance; i < path.size(); ++i) {
+			int zeroedIndex = i - path.size() + slowDistance + 1;
+			System.out.println("zeroedIndex in ramp down is " + zeroedIndex + " i is " + i + " and path.size() is" + path.size());
+			path.get(i).moveSpeed = 1 -  delta * zeroedIndex;
+			path.get(i).followDistance = 3;
+		}
+
+
 	}
 }
