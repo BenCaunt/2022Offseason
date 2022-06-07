@@ -19,8 +19,7 @@ import static java.util.Collections.reverse;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class AStar {
-
-
+	
 	final int REASONABLE_INFINITY = 10000;
 
 	final int FIELD_SIZE = 144;
