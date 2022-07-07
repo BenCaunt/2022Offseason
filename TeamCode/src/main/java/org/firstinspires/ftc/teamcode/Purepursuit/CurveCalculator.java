@@ -20,6 +20,11 @@ import org.firstinspires.ftc.teamcode.Robot.Subsystems.Dashboard;
 import java.util.ArrayList;
 
 public class CurveCalculator {
+
+    public final static double PRECISE_FOLLOW_DIST_IN = 2; // INCHES
+    public final static double FAST_FOLLOW_DIST_IN = 8; // INCHES
+
+
     public  CurvePoint previousIntersection = new CurvePoint(0,0);
     protected boolean endIsTarget = false;
     protected boolean isDone = false;
@@ -73,41 +78,6 @@ public class CurveCalculator {
 
     }
 
-    public double[] getDriveSignalMec(ArrayList<CurvePoint> allPoints, Pose2d robotPose) {
-
-        CurvePoint target = calculateFollowingPoint(allPoints, robotPose);
-        Pose2d targetPose = new Pose2d(target.x,target.y,new Rotation2d(0));
-        double angle = robotPose.angleBetween(targetPose);
-        double headingError = -MathUtils.normalizedHeadingError(
-                angle,
-                robotPose.getHeading()
-        );
-
-        double kp = 0.05;
-
-        double xDelta = targetPose.getX() - robotPose.getX();
-        xDelta *= kp;
-
-        double yDelta = targetPose.getY() - robotPose.getY();
-        yDelta *= kp;
-
-        Vector2d vec = new Vector2d(xDelta,yDelta);
-        vec = vec.rotateBy(Math.toDegrees(robotPose.getHeading()));
-
-
-
-        double turnSpeed = angleControl.calculate(0, headingError);
-        double headingScale = Math.abs(Math.cos(clip(headingError, -Math.PI/2, Math.PI/2)));
-
-        turnSpeed = clip(turnSpeed,-1,1);
-
-        return new double[] {
-                vec.getX() * target.moveSpeed * headingScale,
-                vec.getY() * target.moveSpeed * headingScale,
-                turnSpeed
-        };
-
-    }
 
     public CurvePoint calculateFollowingPoint(ArrayList<CurvePoint> allPoints, Pose2d robotPose) {
         for (int i = 0; i < allPoints.size()-1; ++i) {

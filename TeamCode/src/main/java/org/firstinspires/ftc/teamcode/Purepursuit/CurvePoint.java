@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 
 import org.firstinspires.ftc.teamcode.Math.Geometry.Pose2d;
 import org.firstinspires.ftc.teamcode.Math.Geometry.Rotation2d;
+import org.firstinspires.ftc.teamcode.Robot.Commands.DrivetrainCommands.DrivePurePursuit;
 
 /**
  * point in our pure pursuit curve that we will actively move toward
@@ -18,7 +19,7 @@ public class CurvePoint {
     protected boolean isObstacle = false;
     public boolean visited = false;
 
-    public final double DEFAULT_FOLLOW_DIST = 5;
+    public final double DEFAULT_FOLLOW_DIST = CurveCalculator.FAST_FOLLOW_DIST_IN;
 
     public CurvePoint(double x, double y, double moveSpeed, double followDistance) {
         this.x = x;

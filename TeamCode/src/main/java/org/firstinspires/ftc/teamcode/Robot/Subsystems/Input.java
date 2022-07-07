@@ -368,6 +368,19 @@ public class Input extends Subsystem {
 		return touchpad_finger_2_y;
 	}
 
+
+
+	public double getForwardJoystick() {
+		return -getLeft_stick_y();
+	}
+
+	public double getStrafeJoystick() {
+		return getLeft_stick_x();
+	}
+
+	public double getTurnJoystick() {
+		return getRight_stick_x();
+	}
 	public boolean isCrossPressed() {
 		return cross && !cross_prev;
 	}
